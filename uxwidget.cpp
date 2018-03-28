@@ -1,5 +1,5 @@
 #include "uxwidget.h"
-#include "/media/root/LENOVO/WpSystem/Qt5/Examples/Qt-5.10.0/quick/quickwidgets/quickwidget/uxzoomchart.h"
+#include "uxzoomchart.h"
 #include "ui_widget.h"
 #include <QPainter>
 #include <QBrush>
@@ -13,11 +13,9 @@ UXWidget::UXWidget(QWidget *parent) :
     pos2{QPoint(0,0)},
     stage{1},
     chart{new UXZOOMCHART},
-    vectorz{new QVector<qreal>}/*,
-    ui(new Ui::UXWidget)*/
+    vectorz{new QVector<qreal>}
 {
-//    ui->setupUi(this);
-    setUpdatesEnabled(true);
+
 }
 
 int UXWidget::getINT(double a)
@@ -119,7 +117,7 @@ void UXWidget::paintEvent(QPaintEvent *event)
             }
             painter->end();
             stage = 1;
-
+            //Data Get Here
             QSplineSeries *series = new QSplineSeries();
             for(int i = 0;i<vectorx.count();i++){
                 series->append(i,std::sin(vectorx.at(i) + vectory.at(i)));

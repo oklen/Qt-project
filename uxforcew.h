@@ -18,9 +18,13 @@
 #include "components/qtmaterialprogress.h"
 #include "components/qtmaterialraisedbutton.h"
 #include "components/qtmaterialtoggle.h"
-#include "/media/root/LENOVO/WpSystem/Qt_project/painters/uxwidget.h"
+#include "uxwidget.h"
 #include "uxzoomchart.h"
 #include "uxzoomchartview.h"
+#include "uxcb.h"
+#include "uxdpainter.h"
+#include "uxfilemapread.h"
+
 
 class UXFORCEW : public QFrame
 {
@@ -32,6 +36,8 @@ public:
     UXZOOMCHARTVIEW *childchart;            //chart container
     QHBoxLayout *h2layoutr;
     QLabel *colorbar;
+    UXDPAINTER dpainter;
+    UXFILEMAPREAD filemapreader;
 
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -41,6 +47,7 @@ public:
     //and explain in other class
     QPoint hotpot;
     bool mousedown = false;
+    bool showed = false;
 
 signals:
     void bepressed();
@@ -48,6 +55,7 @@ public slots:
     void changetoggle(bool checked);
     void hidechart();
     void enablechart();
+    void closehide();
 };
 
 #endif // UXFORCEW_H

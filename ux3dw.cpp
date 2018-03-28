@@ -1,29 +1,21 @@
 #include "ux3dw.h"
 #include <QStyle>
+#include <QDebug>
+
 
 UX3DW::UX3DW(QWidget *parent) : QFrame(parent),
-    colorbar{new QLabel},h3layout{new QHBoxLayout},
+    qlcolorbar{new QLabel},h3layout{new QHBoxLayout},
     toggle{new QtMaterialToggle},
-    chart(new UXZOOMCHART),
-    chartview(new UXZOOMCHARTVIEW(0)),
-    selector{new UXWidget},
-  pointer{new QWidget},
-  d3replacer{new QLabel}
+    uxzcchart(new UXZOOMCHART),
+    uxzcvchartview(new UXZOOMCHARTVIEW(0)),
+    uxwselector{new UXWidget},
+  qwpointer{new QWidget},
+  qld3replacer{new QLabel}
 
 {
-    chartview = new UXZOOMCHARTVIEW(selector->getchart());
-    chartview->yvalue = selector->vectorz;
-    chartview->enablevis();
-
-    this->setStyleSheet("QFrame{background-color: #4c4c4c; border: none;"
-                        "border-radius: 5px;"
-                        "border: 0px solid white;}"
-                        "QLabel{color:white;font-size:15px}"
-                        "QLabel#d3label{font-size:25px}");
-
-    this->setFrameStyle(QPalette::Shadow);
-
-//    this->setPalette(pa);
+    uxzcvchartview = new UXZOOMCHARTVIEW(uxwselector->getchart());
+    uxzcvchartview->yvalue = uxwselector->vectorz;
+    uxzcvchartview->enablevis();
 
     QHBoxLayout *h2layout = new QHBoxLayout;
     QLabel *d3label = new QLabel;
@@ -36,26 +28,22 @@ UX3DW::UX3DW(QWidget *parent) : QFrame(parent),
     font.setPointSize(20);
     d3label->setFont(font);
 
-//    setStyleSheet("*{background:black }"
-//                  "Frame{border:3px}");
+    container = QWidget::createWindowContainer(q3dsgraph,
+                                                        this);
+    qwpointer = container;
 
+    uxdvmodifier = new UXDatav(q3dsgraph);
 
-
-    QWidget *container = QWidget::createWindowContainer(graph,
-                                                        this,
-                                                        Qt::SubWindow);
-    pointer = container;
-
-    modifier = new UXDatav(graph);
-
-//graph->scene()->activeCamera()->setCameraPosition(m_xRotation, m_yRotation);
+//graph->scene()->activeCamera()->setCameraPosition(m_ixrotation, m_iyrotation);
 
 
     d3label->setText("3D Modeling");
     QtMaterialIconButton *max = new QtMaterialIconButton
             (QIcon("./components/icons/navigation/svg/production/ic_expand_more_24px.svg"));
-    QtMaterialIconButton *close = new QtMaterialIconButton
-            (QIcon("./components/icons/navigation/svg/production/ic_close_24px.svg"));
+
+    //    QtMaterialIconButton *close = new QtMaterialIconButton(
+    //                QIcon("./components/icons/navigation/svg/production/ic_expand_more_24px.svg"));
+    UXCB *close = new UXCB(this);
     h2layout->addWidget(d3label);
     h2layout->addStretch();
     h2layout->addWidget(max);
@@ -71,10 +59,10 @@ UX3DW::UX3DW(QWidget *parent) : QFrame(parent),
     QPainter *colorbarpainter = new QPainter(pix);
     colorbarpainter->setBrush(QBrush(*brush));
     colorbarpainter->drawRect(QRect(0,0,50,400));
-    colorbar->setPixmap(*pix);
-    colorbar->setFixedSize(QSize(50,400));
+    qlcolorbar->setPixmap(*pix);
+    qlcolorbar->setFixedSize(QSize(50,400));
     container->setFixedSize(QSize(500,400));
-        h1layout->addWidget(colorbar);
+        h1layout->addWidget(qlcolorbar);
     h1layout->addWidget(container);
 
 
@@ -102,7 +90,7 @@ UX3DW::UX3DW(QWidget *parent) : QFrame(parent),
 
     QVBoxLayout *h7layout = new QVBoxLayout;
     QLabel *zoomlabel = new QLabel;
-    zoomlabel->setText("Zoom");
+    zoomlabel->setText("zoom");
     QtMaterialSlider *zoomslider = new QtMaterialSlider;
     zoomslider->setMinimum(10);
     zoomslider->setMaximum(500);
@@ -131,29 +119,32 @@ UX3DW::UX3DW(QWidget *parent) : QFrame(parent),
     QVBoxLayout *v2layout = new QVBoxLayout;
     v2layout->addLayout(h2layout);
     v2layout->addLayout(h3layout);
-//    v2layout->addWidget(selector);
 
 //dynamic widget
 
     h3layout->addLayout(v1layout);
-//    h3layout->addWidget(chartview);
+//    h3layout->addWidget(uxzcvchartview);
     setLayout(v2layout);
 
     // Add Connect there
 
 
-    connect(modifier->getgraph()->seriesList().at(0),&QSurface3DSeries::selectedPointChanged,
+    connect(uxdvmodifier->getgraph()->seriesList().at(0),&QSurface3DSeries::selectedPointChanged,
                      this,&UX3DW::setxyz);
     connect(toggle,SIGNAL(toggled(bool)),this,SLOT(changetoggle(bool)));
     connect(max,SIGNAL(clicked()),this,SLOT(showMaximized()));
-    connect(close,SIGNAL(clicked()),this,SLOT(close()));
+    connect(close,SIGNAL(myclick()),this,SLOT(closehide()));
     connect(xslider,SIGNAL(valueChanged(int)),this,SLOT(rotatex(int)));
     connect(yslider,SIGNAL(valueChanged(int)),this,SLOT(rotatey(int)));
     connect(zoomslider,SIGNAL(valueChanged(int)),this,SLOT(zoomto(int)));
 
+    //set format
+    setqss("F:/Qt-project/picture/3d.qss");
+    this->setFrameStyle(QPalette::Shadow);
+
     // Custom 3D Theme
     Q3DTheme *mytheme = new Q3DTheme;
-    mytheme = graph->activeTheme();
+    mytheme = q3dsgraph->activeTheme();
     mytheme->setBackgroundColor(Qt::black);
     mytheme->setWindowColor(Qt::black);
     QFont myfont;
@@ -170,14 +161,14 @@ UX3DW::UX3DW(QWidget *parent) : QFrame(parent),
 
 void UX3DW::mousePressEvent(QMouseEvent *event)
 {
-    if(!pointer->isVisible())
+    if(!qwpointer->isVisible())
     {
             raise();
-            d3replacer->hide();
-            pointer->show();
+            qld3replacer->hide();
+            qwpointer->show();
     }
     mousedown = true;
-    hotpot = event->pos();
+    qphotpot = event->pos();
 
 }
 
@@ -190,22 +181,22 @@ void UX3DW::mouseReleaseEvent(QMouseEvent *event)
 
 void UX3DW::mouseMoveEvent(QMouseEvent *event)
 {
-    if (mousedown && QRect(0,0,1000,800).contains(this->pos()+event->pos()-hotpot)){
+    if (mousedown && QRect(0,0,1000,800).contains(this->pos()+event->pos()-qphotpot)){
         qDebug() << "Move!";
-        this->move(this->pos()+event->pos()-hotpot);
+        this->move(this->pos()+event->pos()-qphotpot);
     }
     else
     {
         if(mousedown && QRect(0,0,1000,800).contains(this->pos()
-                                                     +QPoint((event->pos()-hotpot).x(),0)))
-            this->move(this->pos()+QPoint((event->pos()-hotpot).x(),0));
+                                                     +QPoint((event->pos()-qphotpot).x(),0)))
+            this->move(this->pos()+QPoint((event->pos()-qphotpot).x(),0));
         if(mousedown && QRect(0,0,1000,800).contains(this->pos()
-                                                     +QPoint(0,(event->pos()-hotpot).y())))
-            this->move(this->pos()+QPoint(0,(event->pos()-hotpot).y()));
+                                                     +QPoint(0,(event->pos()-qphotpot).y())))
+            this->move(this->pos()+QPoint(0,(event->pos()-qphotpot).y()));
     }
     qDebug() << "this pos:" << this->pos() << " "
              << "event pos:" << event->pos() << " "
-             << "hotpot:" << hotpot;
+             << "qphotpot:" << qphotpot;
 }
 
 void UX3DW::paintEvent(QPaintEvent *event)
@@ -219,24 +210,23 @@ void UX3DW::paintEvent(QPaintEvent *event)
 
 void UX3DW::setxyz()
 {
-    QPoint d3point = modifier->getgraph()->selectedSeries()->selectedPoint();
-    selector->manualactive(d3point);
+    QPoint d3point = uxdvmodifier->getgraph()->selectedSeries()->selectedPoint();
+    uxwselector->manualactive(d3point);
     qDebug() << "Detected " << d3point;
 }
 
 void UX3DW::hidechart()
 {
-    h3layout->removeWidget(chartview);
-    chartview->hide();
+    h3layout->removeWidget(uxzcvchartview);
+    uxzcvchartview->hide();
     this->adjustSize();
 }
-
 void UX3DW::enablechart()
 {
-    h3layout->addWidget(chartview);
-    chartview->setFixedSize(600,700);
-//    chartview->chart()->resize(QSize(300,300));
-    chartview->show();
+    h3layout->addWidget(uxzcvchartview);
+    uxzcvchartview->setFixedSize(600,700);
+//    uxzcvchartview->chart()->resize(QSize(300,300));
+    uxzcvchartview->show();
     this->adjustSize();
 }
 
@@ -250,40 +240,47 @@ void UX3DW::changetoggle(bool checked)
 
 void UX3DW::rotatex(int rotation)
 {
-    xr = rotation;
-    modifier->getgraph()->scene()->activeCamera()->setCameraPosition(xr,yr,zoom);
-    qDebug() << "Change x:" << xr;
+    ixr = rotation;
+    uxdvmodifier->getgraph()->scene()->activeCamera()->setCameraPosition(ixr,iyr,izoom);
+    qDebug() << "Change x:" << ixr;
 }
 
 void UX3DW::rotatey(int rotation)
 {
-    yr = rotation;
-    modifier->getgraph()->scene()->activeCamera()->setCameraPosition(xr,yr,zoom);
-    qDebug() << "Change y:" << yr;
+    iyr = rotation;
+    uxdvmodifier->getgraph()->scene()->activeCamera()->setCameraPosition(ixr,iyr,izoom);
+    qDebug() << "Change y:" << iyr;
 }
 
-void UX3DW::zoomto(int zoomin)
+void UX3DW::zoomto(int izoomin)
 {
-    zoom = zoomin;
-    modifier->getgraph()->scene()->activeCamera()->setCameraPosition(xr,yr,zoom);
+    izoom = izoomin;
+    uxdvmodifier->getgraph()->scene()->activeCamera()->setCameraPosition(ixr,iyr,izoom);
 }
 
 void UX3DW::windowswap()
 {
-    if(pointer->isVisible())
+    if(qwpointer->isVisible())
     {
+        qld3replacer->hide();
         QScreen *screen = QGuiApplication::primaryScreen();
-        QPixmap mypix(screen->grabWindow(mainwindowid,this->x()+pointer->x(),
-                                         this->y()+pointer->y(),pointer->width(),
-                                         pointer->height()));
-        d3replacer->setPixmap(mypix);
-        graph->requestUpdate();
+        QDesktopWidget *desk = QApplication::desktop();
+        qDebug() <<"pos" << desk->pos();
+        QPixmap mypix(  screen->grabWindow(0,QWidget::mapToGlobal(QPoint(qwpointer->x(),0)).x(),
+                                         QWidget::mapToGlobal(QPoint(0,qwpointer->y())).y(),qwpointer->width(),
+                                         qwpointer->height()));
+//        QPixmap mypix(desk->grab());
+//        qDebug() << "Get Window Id" << q3dsgraph->winId();
 
-        pointer->hide();
-        h1layout->addWidget(d3replacer);
-        d3replacer->show();
-//        h1layout->addWidget(pointer);
-//        pointer->hide();
+
+        qld3replacer->setPixmap(mypix);
+//        q3dsgraph->requestUpdate();
+
+        qwpointer->hide();
+        h1layout->addWidget(qld3replacer);
+        qld3replacer->show();
+//        h1layout->addWidget(qwpointer);
+//        qwpointer->hide();
 //        QTimer::singleShot(5000,this,SLOT(hided3()));
         //        colorbar->hide();
         adjustSize();
@@ -293,6 +290,20 @@ void UX3DW::windowswap()
 
 void UX3DW::hided3()
 {
-    h1layout->removeWidget(pointer);
-    pointer->hide();
+    h1layout->removeWidget(qwpointer);
+    qwpointer->hide();
+}
+
+void UX3DW::setqss(QString filename)
+{
+    QFile qssfile(filename);
+    qssfile.open(QIODevice::ReadOnly | QIODevice::Text);
+    setStyleSheet( qssfile.readAll());
+    qssfile.close();
+}
+
+void UX3DW::closehide()
+{
+    hide();
+    showed = false;
 }

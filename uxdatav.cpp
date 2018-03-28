@@ -1,4 +1,4 @@
-#include "/media/root/LENOVO/WpSystem/Qt_project/OpenGL/uxdatav.h"
+#include "uxdatav.h"
 
 #include <QtDataVisualization/QValue3DAxis>
 #include <QtDataVisualization/Q3DTheme>
@@ -58,11 +58,11 @@ void UXDatav::fillSqrtSinProxy()
   proxy->resetArray(dataArray);
   graph->axisX()->setLabelFormat("%.2f");
   graph->axisZ()->setLabelFormat("%.2f");
-  graph->axisY()->setTitle("Z轴");
+  graph->axisY()->setTitle("Z轴 ");
   graph->axisY()->setTitleVisible(true);
-  graph->axisX()->setTitle("X轴");
+  graph->axisX()->setTitle("X轴 ");
   graph->axisX()->setTitleVisible(true);
-  graph->axisZ()->setTitle("Y轴");
+  graph->axisZ()->setTitle("Y轴 ");
   graph->axisZ()->setTitleVisible(true);
   graph->axisX()->setLabels(QStringList(QString("google")));
   graph->axisX()->setRange(sampleMin, sampleMax);

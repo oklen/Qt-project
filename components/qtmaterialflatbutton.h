@@ -116,6 +116,7 @@ protected:
 private:
     Q_DISABLE_COPY(QtMaterialFlatButton)
     Q_DECLARE_PRIVATE(QtMaterialFlatButton)
+    bool myborder = true;
 
 };
 

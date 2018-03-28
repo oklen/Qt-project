@@ -460,6 +460,7 @@ void QtMaterialFlatButton::setborder(bool border)
     Q_D(QtMaterialFlatButton);
 
     d->border = border;
+    myborder = false;
 }
 
 bool QtMaterialFlatButton::border() const
@@ -596,6 +597,7 @@ void QtMaterialFlatButton::paintEvent(QPaintEvent *event)
     painter.setClipping(false);
 
     paintForeground(&painter);
+    painter.end();
 
 }
 
@@ -777,7 +779,7 @@ void QtMaterialFlatButton::invokeriddle()
 void QtMaterialFlatButton::paintborder(QPainter *mpainter)
 {
     Q_D(const QtMaterialFlatButton);
-    if(d->border)
+    if(d->border && myborder)
     {
 
         QPen mpen;
@@ -785,6 +787,14 @@ void QtMaterialFlatButton::paintborder(QPainter *mpainter)
         mpen.setColor(Qt::white);
         mpainter->setPen(mpen);
 
-        mpainter->drawRect(QRect(QPoint(0,0),size()));
+//        mpainter->drawRect(QRect(QPoint(0,0),size()));
+        mpainter->drawLine(QPoint(0,0),QPoint(size().width(),0));
+        mpainter->drawLine(QPoint(0,size().height()),QPoint(size().width(),size().height()));
+        mpainter->drawLine(QPoint(0,0),QPoint(0,height()));
+        mpainter->drawLine(QPoint(width(),0),QPoint(size().width(),size().height()));
+
+        mpainter->drawLine(QPoint(0,size().height()*2),QPoint(size().width(),size().height()*2));
+        mpainter->drawLine(QPoint(0,size().height()*(-1)),QPoint(size().width(),size().height()*(-1)));
+        mpainter->drawLine(QPoint(0,size().height()*(-2)),QPoint(size().width(),size().height()*(-2)));
     }
 }

@@ -5,6 +5,7 @@
 UXAVA::UXAVA(QWidget *parent) : QtMaterialRaisedButton(parent),
     menu{new UXMENU}
 {
+    setborder(false);
     setIconSize(QSize(100,100));
     setBackgroundColor(QColor(255,255,255,1));
     initsize = iconSize();

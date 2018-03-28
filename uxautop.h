@@ -20,6 +20,8 @@
 #include <QVector3D>
 #include <QLCDNumber>
 #include <QCloseEvent>
+#include <QGraphicsItem>
+#include <QTimer>
 
 #include "components/qtmaterialiconbutton.h"
 #include "components/qtmaterialprogress.h"
@@ -28,7 +30,10 @@
 #include "components/qtmaterialslider.h"
 #include "components/qtmaterialautocomplete.h"
 #include "components/qtmaterialdialog.h"
-#include "uxtumbler.h"
+#include "uxcb.h"
+#include "uxccdper.h"
+#include "uxlp.h"
+
 
 
 
@@ -45,23 +50,33 @@ public:
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
+    bool showed = false; // if the window is showed
+    bool ch = true;
+    QVBoxLayout *v3layout = new QVBoxLayout;
+    QVBoxLayout *v11layout = new QVBoxLayout;
+
+//    UXLP lp;
+
 private:
-    QtMaterialRaisedButton *begin = new QtMaterialRaisedButton; //æ‰«æ
-    QtMaterialRaisedButton *end = new QtMaterialRaisedButton; //é€€é’ˆ
-    QtMaterialRaisedButton *approache = new QtMaterialRaisedButton; //è¿›é’ˆ
-    QTimer *invoker = new QTimer; //ç”¨æ¥æ¿€æ´»æ‰«æè¿›åº¦åˆ·æ–°çš„æ—¶é’Ÿ
-    bool approchbegin = false; // if è¿›é’ˆ begin
-    bool beginbegin = false; // if  æ‰«æ begin
-    bool endbegin = false; // if é€€é’ˆ begin
+
+    QtMaterialRaisedButton *begin = new QtMaterialRaisedButton; //
+    QtMaterialRaisedButton *end = new QtMaterialRaisedButton; //probe come back
+    QtMaterialRaisedButton *approache = new QtMaterialRaisedButton; //½øÕë
+    QTimer *invoker = new QTimer; //ÓÃÀ´¼¤»îÉ¨Ãè½ø¶ÈË¢ĞÂµÄÊ±ÖÓ
+    bool approchbegin = false; // if ½øÕë begin
+    bool beginbegin = false; // if  É¨Ãè begin
+    bool endbegin = false; // if ÍËÕë begin
 
     QPoint hotpot = QPoint(0,0); // mouse click point relativtly its parent
     bool mousedown = false; // if mouse button pressed
+
 signals:
     void bepressed(); //Signal to tell the mousepresse d event
 public slots:
     void approchestart();
     void beginstart();
     void endstart();
+    void closehide();
 };
 
 #endif // AUTOP_H

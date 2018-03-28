@@ -4,6 +4,17 @@ UXAUTOP::UXAUTOP(QWidget *parent) : QFrame(parent),
     h2layout{new QHBoxLayout},
     warning{new QtMaterialRaisedButton}
 {
+//    begin->setborder(false);
+
+
+//    QLabel currentp;
+//    QLabel remaintime;
+//    currentp.setParent(this);
+//    remaintime.setParent(this);
+//    currentp.setText("75% (256 of 192)");
+//    remaintime.setText("~ 00:15:00");
+//    currentp.move(20,460);
+//    remaintime.move(440,460);
 
 //    construct the widget and layout
     QHBoxLayout *hlayout = new QHBoxLayout;
@@ -12,54 +23,47 @@ UXAUTOP::UXAUTOP(QWidget *parent) : QFrame(parent),
     autotitle->setObjectName("autotitle");
     QtMaterialIconButton *max = new QtMaterialIconButton(
                 QIcon("./components/icons/navigation/svg/production/ic_expand_more_24px.svg"));
-    QtMaterialIconButton *close = new QtMaterialIconButton(
-                QIcon("./components/icons/navigation/svg/production/ic_expand_more_24px.svg"));
+//    QtMaterialIconButton *close = new QtMaterialIconButton(
+//                QIcon("./components/icons/navigation/svg/production/ic_expand_more_24px.svg"));
+    UXCB *close = new UXCB(this);
     hlayout->addWidget(autotitle);
     hlayout->addStretch();
     hlayout->addWidget(max);
     hlayout->addWidget(close);
 
     //Foucs Adjust Interface Constuction
-    QHBoxLayout *h11layout = new QHBoxLayout;
-    QLabel *foucsadjust = new QLabel;
-    foucsadjust->setText("Focus Adjust");
-    foucsadjust->setObjectName("foucslabel");
+//    QHBoxLayout *h11layout = new QHBoxLayout;
+//    QLabel *foucsadjust = new QLabel;
+//    foucsadjust->setText("Focus Adjust");
+//    foucsadjust->setObjectName("foucslabel");
 
-    QLCDNumber *lcd = new QLCDNumber; //the LCD format number show
-    lcd->setDigitCount(10);
-    lcd->display("9611122412");
-    lcd->setFixedHeight(50);
-    h11layout->addWidget(foucsadjust);
-    h11layout->addWidget(lcd);
+//    QLCDNumber *lcd = new QLCDNumber; //the LCD format number show
+//    lcd->setDigitCount(10);
+//    lcd->display("9611122412");
+//    lcd->setFixedHeight(50);
+//    h11layout->addWidget(foucsadjust);
+//    h11layout->addWidget(lcd);
 
-    QLabel *currentprocess = new QLabel;
-    currentprocess->setText("Current Progress");
-    QtMaterialProgress *progress = new QtMaterialProgress;
-    progress->setInvertedAppearance(true);
-    progress->setProgressType(Material::DeterminateProgress);
-    progress->setMinimum(0);
-    progress->setMaximum(100);
-    progress->setValue(75);
+
    QVBoxLayout  *v4layout = new QVBoxLayout;
 //    v4layout->addWidget(currentvalue);
 //    v4layout->addWidget(lcd);
-    QHBoxLayout *h5layout = new QHBoxLayout;
-    currentprocess->setAlignment(Qt::AlignCenter);
-    h5layout->addWidget(currentprocess);
-    h5layout->addWidget(progress);
-    UXTUMBLER *tumbler = new UXTUMBLER;
-    tumbler->setFixedSize(300,55);
+
+//    UXTUMBLER *tumbler = new UXTUMBLER;
+//    tumbler->setFixedSize(300,55);
     h2layout->addLayout(v4layout);
 //    h2layout->addLayout(v5layout);
 
     //Finsh
 
-    QVBoxLayout *v1layout = new QVBoxLayout;
+//    QVBoxLayout *v1layout = new QVBoxLayout;
 //    QLabel *feedback = new QLabel;
 //    feedback->setText("Set Feedback");
 
     // construct auto-complete widget
-    QtMaterialAutoComplete *autoc = new QtMaterialAutoComplete;
+
+//    QtMaterialAutoComplete *autoc = new QtMaterialAutoComplete;
+
     // add data
     QStringList mydata = QStringList(QString("12,32"));
     mydata.append("22,32");
@@ -79,66 +83,74 @@ UXAUTOP::UXAUTOP(QWidget *parent) : QFrame(parent),
     mydata.append("12,32");
     mydata.append("26,32");
 
-    autoc->setDataSource(mydata);
+//    autoc->setDataSource(mydata);
 
 
-    //configure the color and font
-    autoc->setLabelColor(QColor("white"));
-    autoc->setLabel("Input Feed Back");
-    autoc->setLabelFontSize(8);
-    autoc->setInputLineColor(QColor("#d7f6f6"));
-    autoc->setInkColor(QColor("white"));
-    autoc->setLabelColor(QColor("white"));
-    autoc->setTextColor(Qt::white);
+//    //configure the color and font
+//    autoc->setLabelColor(QColor("white"));
+//    autoc->setLabel("Input Feed Back");
+//    autoc->setLabelFontSize(8);
+//    autoc->setInputLineColor(QColor("#d7f6f6"));
+//    autoc->setInkColor(QColor("white"));
+//    autoc->setLabelColor(QColor("white"));
+//    autoc->setTextColor(Qt::white);
+
 
 
 //    v1layout->addWidget(feedback);
-    approache->setText("è¿›é’ˆ");
+    if(ch)
+    approache->setText(QString::fromLocal8Bit("¿ªÊ¼½øÕë"));
+    else
+        approache->setText("Position");
     approache->setCheckable(false);
     approache->setHaloVisible(false);
-    approache->setBackgroundColor(QColor(76,76,76));
-    approache->setFixedWidth(160);
-    QHBoxLayout *h12layout = new QHBoxLayout;
-    h12layout->addWidget(autoc);
-    h12layout->addWidget(approache);
-    v1layout->addLayout(h12layout);
+    approache->setBackgroundColor(QColor(27,117,188));
+//    h12layout->addWidget(autoc);
 
     QVBoxLayout *v2layout = new QVBoxLayout;
     begin->setCheckable(false);
-    begin->setText("å¼€å§‹æ‰«æ");
+    if(ch)
+    begin->setText(QString::fromLocal8Bit("¿ªÊ¼É¨Ãè"));
+    else
+        begin->setText("Begin Scan");
     begin->setHaloVisible(false);
-    begin->setBackgroundColor(QColor(76,76,76));
+    begin->setBackgroundColor(QColor(27,117,188));
     warning = end;
     end->setCheckable(false);
-    end->setText("é€€é’ˆ");
+    if(ch)
+    end->setText(QString::fromLocal8Bit("¿ªÊ¼ÍËÕë"));
+    else
+        end->setText("Finish");
     end->setHaloVisible(false);
-    end->setBackgroundColor(QColor(76,76,76));
+    end->setBackgroundColor(QColor(27,117,188));
 
-    v2layout->addLayout(h11layout);
-    v2layout->addWidget(tumbler);
+//    v2layout->addLayout(h11layout);
+//    v2layout->addWidget(tumbler);
+//    v2layout->addWidget(&lp);
     v2layout->addLayout(h2layout);
-    v2layout->addLayout(v1layout);
-    v2layout->addWidget(begin);
-    v2layout->addWidget(end);
+//    v2layout->addLayout(v1layout);
+
 
     QHBoxLayout *h1layout = new QHBoxLayout;
-    QPixmap *pix = new QPixmap(400,300);
-    pix->fill(Qt::darkCyan);
-    QLabel *ccd = new QLabel;
-    ccd->setPixmap(*pix);
-    QVBoxLayout *v11layout = new QVBoxLayout;
-    v11layout->addWidget(ccd);
-    v11layout->addLayout(h5layout);
+//    v11layout->addWidget(ccdper.uxCCD);
+//    v11layout->addLayout(h5layout);
 //    h1layout->addWidget(ccd);
     h1layout->addLayout(v11layout);
+//    h1layout->addWidget(&ccdper.uxCCD);
+
     h1layout->addLayout(v2layout);
 
-    QVBoxLayout *v3layout = new QVBoxLayout;
+    QHBoxLayout *h2layout = new QHBoxLayout;
+    h2layout->addWidget(approache);
+    h2layout->addWidget(begin);
+    h2layout->addWidget(end);
+
     v3layout->addLayout(hlayout);
     v3layout->addLayout(h1layout);
+    v3layout->addLayout(h2layout);
     setStyleSheet("*{background:#4c4c4c }"
                   "Frame{border:3px}"
-                  "QLabel{color:white}"
+                  "QtMaterialRaisedButton{color:white;font-size:20px;font-weight:15px}"
                   "QLabel#autotitle{color:white;font-size:25px;}"
                   "QLabel#analysizelabel{color:white;font-size:15px;}"
                   "QLabel#foucslabel{color:white;font-size:20px;}");
@@ -152,16 +164,19 @@ UXAUTOP::UXAUTOP(QWidget *parent) : QFrame(parent),
 
 //   add signal and slots
 
+
     connect(approache,SIGNAL(clicked(bool)),this,SLOT(approchestart()));
     connect(begin,SIGNAL(clicked(bool)),this,SLOT(beginstart()));
     connect(end,SIGNAL(clicked(bool)),this,SLOT(endstart()));
+    connect(close,SIGNAL(myclick()),this,SLOT(closehide()));
+
     invoker->start(1000);
 
 }
 
 void UXAUTOP::closeEvent(QCloseEvent *event) //used to show waring when click close but the probe not backward
 {
-    if(warning->text() == QString("é€€é’ˆå®Œæˆ"))
+    if(warning->text() == QString(QString::fromLocal8Bit("ÍËÕëÍê³É")))
         return;
     QtMaterialDialog *pleaseend = new QtMaterialDialog;
 
@@ -175,7 +190,7 @@ void UXAUTOP::closeEvent(QCloseEvent *event) //used to show waring when click cl
     vboxlayout->addWidget(confrom);
     pleaseend->show();
 
-    if(warning->text() != QString("é€€é’ˆå®Œæˆ"))
+    if(warning->text() != QString(QString::fromLocal8Bit("ÍËÕëÍê³É")))
         event->ignore();
     connect(confrom,SIGNAL(clicked(bool)),pleaseend,SLOT(hide()));
 }
@@ -184,7 +199,7 @@ void UXAUTOP::approchestart()
 {
     if(!approchbegin){
         approache->setEnabled(true);
-        approache->setText("æ­£åœ¨è¿›é’ˆ");
+        approache->setText(QString::fromLocal8Bit("ÕýÔÚ½øÕë"));
         connect(invoker,SIGNAL(timeout()),approache,SLOT(invokeriddle()));
         approchbegin = true;
 
@@ -192,11 +207,12 @@ void UXAUTOP::approchestart()
     else{
         disconnect(invoker,SIGNAL(timeout()),approache,SLOT(invokeriddle()));
         approache->setEnabled(false);
-        approache->setText("è¿›é’ˆå®Œæˆ");
+
+        approache->setText(QString::fromLocal8Bit("½øÕëÍê³É"));
         approchbegin = false;
 
         begin->setEnabled(true);
-        begin->setText("å¼€å§‹æ‰«æ");
+        begin->setText(QString::fromLocal8Bit("¿ªÊ¼É¨Ãè"));
     }
 }
 
@@ -204,7 +220,7 @@ void UXAUTOP::beginstart()
 {
     if(!beginbegin){
         begin->setEnabled(true);
-        begin->setText("æ­£åœ¨æ‰«æ");
+        begin->setText(QString::fromLocal8Bit("ÕýÔÚÉ¨Ãè"));
         connect(invoker,SIGNAL(timeout()),begin,SLOT(invokeriddle()));
         beginbegin = true;
 
@@ -212,10 +228,10 @@ void UXAUTOP::beginstart()
     else{
         disconnect(invoker,SIGNAL(timeout()),begin,SLOT(invokeriddle()));
         begin->setEnabled(false);
-        begin->setText("æ‰«æå®Œæˆ");
+        begin->setText(QString::fromLocal8Bit("É¨ÃèÍê³É"));
         beginbegin = false;
         end->setEnabled(true);
-        end->setText("é€€é’ˆ");
+        end->setText(QString::fromLocal8Bit("ÍËÕë"));
     }
 }
 
@@ -223,7 +239,7 @@ void UXAUTOP::endstart()
 {
     if(!endbegin){
         end->setEnabled(true);
-        end->setText("æ­£åœ¨é€€é’ˆ");
+        end->setText(QString::fromLocal8Bit("ÕýÔÚÍËÕë"));
         connect(invoker,SIGNAL(timeout()),end,SLOT(invokeriddle()));
         endbegin = true;
 
@@ -231,10 +247,10 @@ void UXAUTOP::endstart()
     else{
         disconnect(invoker,SIGNAL(timeout()),end,SLOT(invokeriddle()));
         end->setEnabled(false);
-        end->setText("é€€é’ˆå®Œæˆ");
+        end->setText(QString::fromLocal8Bit("ÍËÕëÍê³É"));
         endbegin = false;
         approache->setEnabled(true);
-        approache->setText("è¿›é’ˆ");
+        approache->setText(QString::fromLocal8Bit("½øÕë"));
     }
 }
 
@@ -271,4 +287,10 @@ void UXAUTOP::mouseMoveEvent(QMouseEvent *event)
 //    qDebug() << "this pos:" << this->pos() << " "
 //             << "event pos:" << event->pos() << " "
 //             << "hotpot:" << hotpot;
+}
+
+void UXAUTOP::closehide()
+{
+    hide();
+    showed = false;
 }

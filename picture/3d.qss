@@ -1,0 +1,16 @@
+QFrame{
+    background-color: #4c4c4c;
+    border: none;
+    border-radius: 5px;
+    border: 0px solid white;
+    }
+
+QLabel{
+    color:white;
+    font-size:15px;
+    }
+
+QLabel#d3label
+{
+    font-size:25px;
+}

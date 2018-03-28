@@ -7,12 +7,13 @@ UXMENUBUTTON::UXMENUBUTTON(QWidget *parent) : QtMaterialRaisedButton(parent),
 //  ,border{false}
 {
 
+    setborder(false);
     installEventFilter(this);
     setUseThemeColors(false);
     animatere->setDuration(196);
     setHaloVisible(false);
 
-    setIcon(QIcon("/root/图片/spm6.pic"));
+    setIcon(QIcon("F:/Qt-project/picture/spm6.pic"));
     setBackgroundColor(QColor("#4c4c4c"));
     setborder(false);
 
@@ -33,6 +34,7 @@ bool UXMENUBUTTON::eventFilter(QObject *watched, QEvent *event)
         update();
 
     }
+    return false;
 }
 
 void UXMENUBUTTON::mousePressEvent(QMouseEvent *event)
@@ -77,3 +79,5 @@ void UXMENUBUTTON::doanimate1()
     animatere->setEndValue(pos() + QPoint(0,10));
     animatere->start();
 }
+
+

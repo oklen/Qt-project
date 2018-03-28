@@ -18,8 +18,9 @@
 #include "components/qtmaterialraisedbutton.h"
 #include "components/qtmaterialtoggle.h"
 #include "components/qtmaterialslider.h"
-#include "/media/root/LENOVO/WpSystem/Qt_project/OpenGL/uxdatav.h"
-#include "/media/root/LENOVO/WpSystem/Qt_project/painters/uxwidget.h"
+#include "uxdatav.h"
+#include "uxwidget.h"
+#include "uxcb.h"
 
 /******************
  * Provide the 3d window
@@ -33,33 +34,36 @@ public:
     explicit UX3DW(QWidget *parent = nullptr);
     void paintEvent(QPaintEvent *event); //Not Used
     QtMaterialToggle *toggle; //Slice Analysis toggle button
-    QLabel *colorbar; // 调色板
+    QLabel *qlcolorbar; // Gradient Color show board
     QHBoxLayout *h3layout; //The container to contain or remove the chart
+    QWidget *container;
 
 
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
+    void setqss(QString filename); //set style sheet
     void setxyz(); //Acitve the point to Catch Line Data
 
-    QLabel *d3replacer; // screenshot image container to replace the d3 window
-    QWidget *pointer; //pointer point to the d3 window
-    QPoint hotpot;    // Mouse press position relative the parent widget
-    UXDatav *modifier; // Class to modify the 3D model
-    UXWidget *selector; //Provide the line data show
-    UXZOOMCHART *chart; // the interal chart
-    UXZOOMCHARTVIEW *chartview; // the interal chart container
-    Q3DSurface *graph = new Q3DSurface(); // Qt Class to show 3D data model
+    QLabel *qld3replacer; // screenshot image container to replace the d3 window
+    QWidget *qwpointer; //pointer point to the d3 window
+    QPoint qphotpot;    // Mouse press position relative the parent widget
+    UXDatav *uxdvmodifier; // Class to modify the 3D model
+    UXWidget *uxwselector; //Provide the line data show
+    UXZOOMCHART *uxzcchart; // the interal chart
+    UXZOOMCHARTVIEW *uxzcvchartview; // the interal chart container
+    Q3DSurface *q3dsgraph = new Q3DSurface(); // Qt Class to show 3D data model
 
     QHBoxLayout *h1layout = new QHBoxLayout; //3D Window and colorbar horizontal layout
 
-//    QWidget *container = new QWidget;
+//    QWidget *container = new QWidget;11
     bool mousedown = false; // Whether the mouse button is pressed
 
-    int xr = 0; //store x rotation degree
-    int yr = 0; //store y rotation degree
-    int zoom = 100; // store zoom data
+    int ixr = 0; //store x rotation degree
+    int iyr = 0; //store y rotation degree
+    int izoom = 100; // store zoom data
     int mainwindowid; // store mainwindowid
+    bool showed = false;
 signals:
 
 public slots:
@@ -70,7 +74,8 @@ public slots:
     void rotatex(int rotation); //rotate the model x degree
     void rotatey(int rotation); //rotate the model y degree
     void zoomto(int zoom); // zoom to zoom level
-    void hided3(); //hide the 3d window
+    void hided3(); //hide the 3d window !
+    void closehide();
 
 };
 

@@ -1,4 +1,27 @@
 #include "uxforcew.h"
+std::vector<float> messageParse(std::string sourcep)
+{
+     std::vector<float> result;
+     int findin[512] {0};
+     int count = 0;
+     int lastfind = 0;
+
+     for(;;)
+     {
+         if(sourcep.find_first_of(" ",lastfind) != sourcep.npos)
+         {
+             findin[count] = sourcep[sourcep.find_first_of(" ",lastfind)];
+             result.push_back(QString::fromStdString(sourcep.substr(lastfind,sourcep.find_first_of(" ",lastfind)-lastfind)).toFloat());
+             lastfind = sourcep.find_first_of(" ",lastfind) + 1;
+             count++;
+         }
+         else
+         {
+             break;
+         }
+     }
+     return result;
+}
 
 UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
     colorbar{new QLabel},childchart{new UXZOOMCHARTVIEW(0)},
@@ -39,8 +62,9 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
     title->setText("Force Imaging");
     QtMaterialIconButton *max = new QtMaterialIconButton
             (QIcon("./components/icons/navigation/svg/production/ic_expand_more_24px.svg"));
-    QtMaterialIconButton *close = new QtMaterialIconButton
-            (QIcon("./components/icons/navigation/svg/production/ic_close_24px.svg"));
+    //    QtMaterialIconButton *close = new QtMaterialIconButton(
+    //                QIcon("./components/icons/navigation/svg/production/ic_expand_more_24px.svg"));
+    UXCB *close = new UXCB(this);
     h1layout->addWidget(title);
     h1layout->addStretch();
     h1layout->addSpacing(300);
@@ -52,13 +76,15 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
     //For h1 end
 
     //For h3
-    UXWidget *focew = new UXWidget;
-    focew->setFixedSize(512,512);
+    UXWidget *focew = new UXWidget; //The pervisous version force window,change this
+//    focew->setFixedSize(512,512);
+    dpainter.setFixedSize(512,512);
 
 
 
 
-    h3layout->addWidget(focew);
+
+    h3layout->addWidget(&dpainter);
     h3layout->addWidget(colorbar);
 
     //For h3 end
@@ -112,7 +138,7 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
 
     connect(toggle,SIGNAL(toggled(bool)),this,SLOT(changetoggle(bool))); // open chart analysis
     connect(max,SIGNAL(clicked()),this,SLOT(showMaximized())); // max the window
-    connect(close,SIGNAL(clicked()),this,SLOT(close())); // close the window
+    connect(close,SIGNAL(myclick()),this,SLOT(closehide())); // close the window
 
 
     setStyleSheet("*{background:#4c4c4c }"
@@ -167,7 +193,6 @@ void UXFORCEW::changetoggle(bool checked)
 void UXFORCEW::mousePressEvent(QMouseEvent *event)
 {
     emit bepressed();
-    raise();
         mousedown = true;
         hotpot = event->pos();
 }
@@ -182,7 +207,7 @@ void UXFORCEW::mouseReleaseEvent(QMouseEvent *event)
 
 void UXFORCEW::mouseMoveEvent(QMouseEvent *event)
 {
-    if (mousedown and QRect(0,0,1000,800).contains(this->pos()+event->pos()-hotpot)){
+    if (mousedown && QRect(0,0,1000,800).contains(this->pos()+event->pos()-hotpot)){
         qDebug() << "Move!";
         this->move(this->pos()+event->pos()-hotpot);
     }
@@ -200,4 +225,9 @@ void UXFORCEW::mouseMoveEvent(QMouseEvent *event)
              << "hotpot:" << hotpot;
 }
 
+void UXFORCEW::closehide()
+{
+    hide();
+    showed = false;
+}
 

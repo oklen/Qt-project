@@ -44,7 +44,7 @@ QtMaterialAutoCompleteStateMachine::QtMaterialAutoCompleteStateMachine(QWidget *
     m_openState->assignProperty(menu, "visible", true);
 
     QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect;
-    menu->setGraphicsEffect(effect);
+//    menu->setGraphicsEffect(effect);
 
     m_openState->assignProperty(effect, "opacity", 1);
     m_closingState->assignProperty(effect, "opacity", 0);

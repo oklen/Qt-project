@@ -2,7 +2,7 @@
 #define UXCUBIC_H
 
 #include <QWidget>
-#include "/media/root/LENOVO/WpSystem/Qt_project/OpenGL/uxdatav.h"
+#include "uxdatav.h"
 
 
 // used to show cubic chart ,NOT implement yet

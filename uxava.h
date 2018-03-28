@@ -7,7 +7,7 @@
 #include "uxmenu.h"
 
 /*****************************************
- * This is the class for MENU BUTTON on the right top
+ * This is the class for MENU BUTTON on the left top
  * *************************************/
 
 class UXAVA : public QtMaterialRaisedButton

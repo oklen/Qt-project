@@ -116,7 +116,8 @@ void QtMaterialAutoComplete::updateResults(QString text)
         for (int c = 0; c < diff; c++) {
             QtMaterialFlatButton *item = new QtMaterialFlatButton;
             item->setForegroundColor(Qt::white);
-            item->setBackgroundColor(QColor("white"));
+            item->setBackgroundColor(QColor("#747474"));
+
             item->setFont(font);
 
             item->setTextAlignment(Qt::AlignLeft);
@@ -162,7 +163,7 @@ void QtMaterialAutoComplete::updateResults(QString text)
     d->menu->update();
 }
 
-bool QtMaterialAutoComplete::QtMaterialAutoComplete::event(QEvent *event)
+bool QtMaterialAutoComplete::event(QEvent *event)
 {
     Q_D(QtMaterialAutoComplete);
 
@@ -190,14 +191,14 @@ bool QtMaterialAutoComplete::QtMaterialAutoComplete::event(QEvent *event)
 bool QtMaterialAutoComplete::eventFilter(QObject *watched, QEvent *event)
 {
     Q_D(QtMaterialAutoComplete);
-
     if (d->frame == watched)
     {
         switch (event->type())
         {
         case QEvent::Paint: {
             QPainter painter(d->frame);
-            painter.fillRect(d->frame->rect(), Qt::white);
+            painter.fillRect(d->frame->rect(), QColor("#747474"));
+            painter.fillRect(d->menu->rect(), QColor("#747474"));
             break;
         }
         default:
