@@ -33,12 +33,12 @@ void QtMaterialAppBarPrivate::init()
 
     useThemeColors = true;
 
-    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-    effect->setBlurRadius(11);
-    effect->setColor(QColor(0, 0, 0, 50));
-    effect->setOffset(0, 3);
+//    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+//    effect->setBlurRadius(11);
+//    effect->setColor(QColor(0, 0, 0, 50));
+//    effect->setOffset(0, 3);
 
-    q->setGraphicsEffect(effect);
+//    q->setGraphicsEffect(effect);
 
     QHBoxLayout *layout = new QHBoxLayout;
     q->setLayout(layout);

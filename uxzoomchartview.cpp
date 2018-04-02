@@ -15,7 +15,7 @@ UXZOOMCHARTVIEW::UXZOOMCHARTVIEW(UXZOOMCHART *mchart, QWidget *parent) :
     setRubberBand(QChartView::RectangleRubberBand);
     setMouseTracking(true);
     setBackgroundBrush(QBrush(QColor(74,74,74)));
-    chart()->setAnimationOptions(QChart::SeriesAnimations);
+//    chart()->setAnimationOptions(QChart::SeriesAnimations);
 
 }
 
@@ -87,8 +87,7 @@ qDebug()<< "Move! " << yvalue->length();
                             QPointF(
                                 event->x(),chart()->mapToPosition(
                                     QPointF(xval,yvalue->at(int(xval))+(xval - int(xval))*(
-                                                yvalue->at(int(xval)+1) - yvalue->at(int(xval))
-                                                ))).y()));
+                                                yvalue->at(int(xval)+1) - yvalue->at(int(xval))))).y()));
                 pix->fill(Qt::red);
 
 
@@ -114,7 +113,7 @@ void UXZOOMCHARTVIEW::mouseReleaseEvent(QMouseEvent *event)
 
     // Because we disabled animations when touch event was detected
     // we must put them back on.
-    chart()->setAnimationOptions(QChart::SeriesAnimations);
+//    chart()->setAnimationOptions(QChart::SeriesAnimations);
 
     QChartView::mouseReleaseEvent(event);
 }

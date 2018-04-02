@@ -43,44 +43,44 @@ void QtMaterialRaisedButtonPrivate::init()
 
     q->setBackgroundMode(Qt::OpaqueMode);
     q->setMinimumHeight(42);
-    q->setGraphicsEffect(effect);
+//    q->setGraphicsEffect(effect);
     q->setBaseOpacity(0.3);
 
-    shadowStateMachine->addState(normalState);
-    shadowStateMachine->addState(pressedState);
+//    shadowStateMachine->addState(normalState);
+//    shadowStateMachine->addState(pressedState);
 
-    normalState->assignProperty(effect, "offset", QPointF(0, 0));
-    normalState->assignProperty(effect, "blurRadius", 7);
+//    normalState->assignProperty(effect, "offset", QPointF(0, 0));
+//    normalState->assignProperty(effect, "blurRadius", 7);
 
-    pressedState->assignProperty(effect, "offset", QPointF(0, 0));
-    pressedState->assignProperty(effect, "blurRadius", 29);
+//    pressedState->assignProperty(effect, "offset", QPointF(0, 0));
+//    pressedState->assignProperty(effect, "blurRadius", 29);
 
-    QAbstractTransition *transition;
+//    QAbstractTransition *transition;
 
-    transition = new QEventTransition(q, QEvent::MouseButtonPress);
-    transition->setTargetState(pressedState);
-    normalState->addTransition(transition);
+//    transition = new QEventTransition(q, QEvent::MouseButtonPress);
+//    transition->setTargetState(pressedState);
+//    normalState->addTransition(transition);
 
-    transition = new QEventTransition(q, QEvent::MouseButtonDblClick);
-    transition->setTargetState(pressedState);
-    normalState->addTransition(transition);
+//    transition = new QEventTransition(q, QEvent::MouseButtonDblClick);
+//    transition->setTargetState(pressedState);
+//    normalState->addTransition(transition);
 
-    transition = new QEventTransition(q, QEvent::MouseButtonRelease);
-    transition->setTargetState(normalState);
-    pressedState->addTransition(transition);
+//    transition = new QEventTransition(q, QEvent::MouseButtonRelease);
+//    transition->setTargetState(normalState);
+//    pressedState->addTransition(transition);
 
-    QPropertyAnimation *animation;
+//    QPropertyAnimation *animation;
 
-    animation = new QPropertyAnimation(effect, "offset", q);
-    animation->setDuration(100);
-    shadowStateMachine->addDefaultAnimation(animation);
+//    animation = new QPropertyAnimation(effect, "offset", q);
+//    animation->setDuration(100);
+//    shadowStateMachine->addDefaultAnimation(animation);
 
-    animation = new QPropertyAnimation(effect, "blurRadius", q);
-    animation->setDuration(100);
-    shadowStateMachine->addDefaultAnimation(animation);
+//    animation = new QPropertyAnimation(effect, "blurRadius", q);
+//    animation->setDuration(100);
+//    shadowStateMachine->addDefaultAnimation(animation);
 
-    shadowStateMachine->setInitialState(normalState);
-    shadowStateMachine->start();
+//    shadowStateMachine->setInitialState(normalState);
+//    shadowStateMachine->start();
 }
 
 /*!

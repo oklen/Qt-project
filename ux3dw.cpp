@@ -138,6 +138,7 @@ UX3DW::UX3DW(QWidget *parent) : QFrame(parent),
     connect(yslider,SIGNAL(valueChanged(int)),this,SLOT(rotatey(int)));
     connect(zoomslider,SIGNAL(valueChanged(int)),this,SLOT(zoomto(int)));
 
+
     //set format
     setqss("F:/Qt-project/picture/3d.qss");
     this->setFrameStyle(QPalette::Shadow);
@@ -170,6 +171,7 @@ void UX3DW::mousePressEvent(QMouseEvent *event)
     mousedown = true;
     qphotpot = event->pos();
 
+
 }
 
 void UX3DW::mouseReleaseEvent(QMouseEvent *event)
@@ -177,10 +179,24 @@ void UX3DW::mouseReleaseEvent(QMouseEvent *event)
 
     qDebug() << "Child Release";
     mousedown = false;
+    if(onmove)
+    {
+        windowswap();
+        onmove = false;
+    }
 }
 
 void UX3DW::mouseMoveEvent(QMouseEvent *event)
 {
+    if(!onmove && mousedown)
+    {
+
+        windowswap();
+        onmove = true;
+        event->ignore();
+
+    }
+
     if (mousedown && QRect(0,0,1000,800).contains(this->pos()+event->pos()-qphotpot)){
         qDebug() << "Move!";
         this->move(this->pos()+event->pos()-qphotpot);
@@ -262,13 +278,15 @@ void UX3DW::windowswap()
 {
     if(qwpointer->isVisible())
     {
-        qld3replacer->hide();
         QScreen *screen = QGuiApplication::primaryScreen();
         QDesktopWidget *desk = QApplication::desktop();
         qDebug() <<"pos" << desk->pos();
         QPixmap mypix(  screen->grabWindow(0,QWidget::mapToGlobal(QPoint(qwpointer->x(),0)).x(),
                                          QWidget::mapToGlobal(QPoint(0,qwpointer->y())).y(),qwpointer->width(),
                                          qwpointer->height()));
+        QApplication::processEvents();
+        qld3replacer->hide();
+
 //        QPixmap mypix(desk->grab());
 //        qDebug() << "Get Window Id" << q3dsgraph->winId();
 
@@ -279,6 +297,7 @@ void UX3DW::windowswap()
         qwpointer->hide();
         h1layout->addWidget(qld3replacer);
         qld3replacer->show();
+
 //        h1layout->addWidget(qwpointer);
 //        qwpointer->hide();
 //        QTimer::singleShot(5000,this,SLOT(hided3()));
@@ -306,4 +325,9 @@ void UX3DW::closehide()
 {
     hide();
     showed = false;
+}
+
+void UX3DW::d3contentrelease()
+{
+    qDebug() << "release";
 }

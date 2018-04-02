@@ -22,9 +22,6 @@
 #include "uxzoomchart.h"
 #include "uxzoomchartview.h"
 #include "uxcb.h"
-#include "uxdpainter.h"
-#include "uxfilemapread.h"
-
 
 class UXFORCEW : public QFrame
 {
@@ -36,8 +33,6 @@ public:
     UXZOOMCHARTVIEW *childchart;            //chart container
     QHBoxLayout *h2layoutr;
     QLabel *colorbar;
-    UXDPAINTER dpainter;
-    UXFILEMAPREAD filemapreader;
 
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);

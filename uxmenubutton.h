@@ -11,6 +11,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPropertyAnimation>
+#include <QBitmap>
 
 class UXMENUBUTTON : public QtMaterialRaisedButton
 {
@@ -23,15 +24,10 @@ public:
     void setinitsize(QSize size); //set initsize
     void usesize(int w,int h);    //set buttion and it icon size
 
-//    void doanimate2();
-//    void doanimate3();
-//    void doanimate4();
-
     QPropertyAnimation *animatere = new QPropertyAnimation(this,"pos");
     QSize  initsize;
-//    void paintEvent(QPaintEvent *event);
 
-//    bool border;
+//    void paintEvent(QPaintEvent *event);
 
 signals:
     void myclick() const; //define the custome click signal to make the mouse click singal easier to

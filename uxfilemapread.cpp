@@ -3,7 +3,7 @@
 UXFILEMAPREAD::UXFILEMAPREAD()
 {
     setReadSize(16);
-    TCHAR szName[]=_T("Global\\MyFileMappingObject");
+    TCHAR szName[]=TEXT("Global\\MyFileMappingObject");
 //    hMapFile = CreateFileMapping(
 //        INVALID_HANDLE_VALUE,    // use paging file, Creating Named Shared Memory
 //        NULL,                    // default security

@@ -152,9 +152,9 @@ UXCCDPERX::UXCCDPERX()
         uint32_t numStreams = 0;
         retval = J_Camera_GetNumOfDataStreams(m_hCam, &numStreams);
         if(retval != J_ST_SUCCESS)
-            qDebug() << "Steam Data Support fail!";
-//        camerawstart();
-
+        {qDebug() << "Steam Data Support fail!";
+        return;}
+        camerawstart();
 }
 
 void UXCCDPERX::camerawstart()

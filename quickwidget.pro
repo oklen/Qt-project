@@ -97,7 +97,9 @@ SOURCES += main.cpp \
     uxpipeclient.cpp \
     uxservermessageemiter.cpp \
     uxdpainter.cpp \
-    uxfilemapread.cpp
+    uxfilemapread.cpp \
+    mainwindow.cpp \
+    uxtest45.cpp
 HEADERS += \
 #    /root/menu/fileio.h \
 #    /root/menu/fileio2.h \
@@ -441,7 +443,9 @@ HEADERS += \
     uxpipeclient.h \
     uxservermessageemiter.h \
     uxdpainter.h \
-    uxfilemapread.h
+    uxfilemapread.h \
+    mainwindow.h \
+    uxtest45.h
 
 RESOURCES += quickwidget.qrc
 
@@ -1442,9 +1446,12 @@ DISTFILES += \
     components/icons/toggle/svg/production/ic_star_24px.svg \
     components/icons/toggle/svg/production/ic_star_border_24px.svg \
     components/icons/toggle/svg/production/ic_star_half_24px.svg \
-    components/icons/LICENSE \
+    components/icons/LICENSE\
     fonts/Roboto/LICENSE.txt\
     /root/图片/spm6.png \
 DISTFILES += \
     "C:/Program Files/JAI/SDK/library/CPP/include/CLProtocol/ClProtocol.def"\
     "C:/Program Files/JAI/SDK/library/CPP/include/CLProtocol/ClSerial.def"
+
+FORMS += \
+    mainwindow.ui

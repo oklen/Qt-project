@@ -28,6 +28,7 @@ void UXAVA::mousePressEvent(QMouseEvent *event)
         animate->start();
         emit signalp();
 }
+    emit pressed();
 }
 
 void UXAVA::mouseReleaseEvent(QMouseEvent *event)

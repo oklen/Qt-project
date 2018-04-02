@@ -36,6 +36,7 @@ public:
     QtMaterialToggle *toggle; //Slice Analysis toggle button
     QLabel *qlcolorbar; // Gradient Color show board
     QHBoxLayout *h3layout; //The container to contain or remove the chart
+//    QWidget *container;
     QWidget *container;
 
 
@@ -64,6 +65,7 @@ public:
     int izoom = 100; // store zoom data
     int mainwindowid; // store mainwindowid
     bool showed = false;
+    bool onmove = false;
 signals:
 
 public slots:
@@ -76,6 +78,7 @@ public slots:
     void zoomto(int zoom); // zoom to zoom level
     void hided3(); //hide the 3d window !
     void closehide();
+    void d3contentrelease();
 
 };
 

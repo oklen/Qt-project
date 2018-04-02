@@ -10,24 +10,35 @@
 #include "uxmbg.h"
 #include "uxccdper.h"
 #include "uxpepiserver.h"
+#include <QImage>
 
 static bool optMultipleSample = true;
 static bool optCoreProfile = false;
+
+namespace Ui {
+class MainWindow;
+}
 
 class UXMainWindow : public QMainWindow {
     Q_OBJECT
 public:
     UXMainWindow();
-        UXCCDPERX *per; //CCD display window
+    bool drawed = false;
+//        UXCCDPERX *per; //CCD display window
 //    void closeEvent(QCloseEvent *event);
     bool eventFilter(QObject *watched, QEvent *event);
+//    void mousePressEvent(QMouseEvent* event);
+    void paintEvent(QPaintEvent* event);
+    QImage background;
     UXAVA menubutton; // Menu button
-    UX3DW *my3d = new UX3DW; //Menu
+    UX3DW *my3d = new UX3DW; //3D Display
     UXAUTOP autop; //CCD container
     UXFORCEW *forw = new UXFORCEW; // force imaging
+
     UXDLC *dl = new UXDLC; //Dynamic Data Spline chart
-    UXMBG *bg = new UXMBG; //MainWindow centeral widget
-    UXPIPESERVER server;
+//    UXMBG *bg = new UXMBG; //MainWindow centeral widget
+//    UXPIPESERVER server;
+
 
 
 //    void paintEvent(QPaintEvent *event);
@@ -38,7 +49,6 @@ public:
 private:
     bool dlcshowed = false;
     QFrame *centralWidget_f;
-
 
 
 

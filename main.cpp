@@ -62,7 +62,9 @@
 #include "uxcdraw.h"
 #include "timehelper.h"
 #include "uxccdper.h"
-
+//#include "uxuimainwindow.h"
+#include "mainwindow.h"
+#include "uxtest45.h"
 
 
 
@@ -89,11 +91,15 @@ int main(int argc, char **argv)
     QCoreApplication::setApplicationVersion("1.0.0");
     app.setFont(QFont("黑体",13));
 
+//    mywindow.show();
 //    SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)ApplicationCrashHandler);
     UXCCDPERX per;
+
+
     UXMainWindow mainWindow;
+    mainWindow.setWindowFlag(Qt::WindowStaysOnBottomHint);
     /**************************/
-    mainWindow.centralWidget()->setAcceptDrops(true);
+//    mainWindow.centralWidget()->setAcceptDrops(true);
 
 
 //    UXFORCEW *forw = new UXFORCEW;
@@ -106,33 +112,46 @@ int main(int argc, char **argv)
 //    my3d->setWindowTitle("UX3D");
 ////    my3d->setParent(mainWindow.centralWidget());
 //    my3d->show();
+//    UXAUTOP autop;
 
-
-
+//    autop.v11layout->addWidget(per.uxCCD);
+//    autop.show();
     mainWindow.menubutton.setFixedSize(100,100);
-    mainWindow.menubutton.menu->setParent(mainWindow.centralWidget());
+    mainWindow.menubutton.menu->setParent(&mainWindow);
     mainWindow.menubutton.menu->move(0,200);
 
 
     mainWindow.menubutton.setIcon(QIcon("F:/Qt-project/picture/Brand.png"));
-    QVBoxLayout *vlayout = new QVBoxLayout;
-    vlayout->setAlignment(Qt::AlignLeft);
-    vlayout->addWidget(&mainWindow.menubutton);
-    vlayout->addStretch();
 
-    mainWindow.centralWidget()->setLayout(vlayout);
+//    QVBoxLayout *vlayout = new QVBoxLayout;
+//    vlayout->setAlignment(Qt::AlignLeft);
+//    vlayout->addWidget(&mainWindow.menubutton);
+//    vlayout->addStretch();
+
+//    mainWindow.setLayout(vlayout);
 
 
     mainWindow.connect(&mainWindow.menubutton,SIGNAL(signalp()),mainWindow.menubutton.menu,SLOT(showoff())); //show the menu
     mainWindow.connect(&mainWindow.menubutton,SIGNAL(signalp()),mainWindow.my3d,SLOT(windowswap())); //swap 3d windows
     mainWindow.connect(&mainWindow.menubutton,SIGNAL(signalp()),&mainWindow.menubutton,SLOT(bepressed())); //invoke click effect
-    mainWindow.show();
     mainWindow.autop.v11layout->addWidget(per.uxCCD);
-    mainWindow.connect(&mainWindow.server.emiter,SIGNAL(m1(float,float,float)),per.uxCCD,SLOT(set4window(float,float,float)));//Connect message1
+    mainWindow.show();
 
-//        UXAUTOP autop;
-//        autop.v11layout->addWidget(per.uxCCD);
+//    UXCCDPERX uxccd;
+
+//    UXAUTOP autop;
+//    autop.v11layout->addWidget(uxccd.uxCCD);
 //    autop.show();
+//    UXFORCEW forcw;
+//    forcw.show();
+//    UX3DW d3w;
+//    d3w.show();
+//    mainWindow.connect(&mainWindow.server.emiter,SIGNAL(m1(float,float,float)),per.uxCCD,SLOT(set4window(float,float,float)));//Connect message1
+
+//            MainWindow mywindow;
+//        mywindow.m_autop.v11layout->addWidget(per.uxCCD);
+
+//    mywindow.show();
 
 
 //   QLabel *currentprocess = new QLabel;

@@ -41,9 +41,10 @@ public:
 private:
     int x;
     int y;
-    bool beginpaint = false;
+    bool beginpaint = true;
 
 signals:
+    void painting();
 
 public slots:
     void dopainting();

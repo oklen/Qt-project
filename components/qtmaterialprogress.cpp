@@ -151,9 +151,9 @@ void QtMaterialProgress::paintEvent(QPaintEvent *event)
     painter.setBrush(brush);
     painter.setPen(Qt::NoPen);
 
-    QPainterPath path;
-    path.addRoundedRect(0, height()/2-3, width(), 6, 3, 3);
-    painter.setClipPath(path);
+//    QPainterPath path;
+//    path.addRoundedRect(0, height()/2-3, width(), 6, 3, 3);
+//    painter.setClipPath(path);
 
     painter.drawRect(0, 0, width(), height());
 

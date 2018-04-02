@@ -1,27 +1,4 @@
 #include "uxforcew.h"
-std::vector<float> messageParse(std::string sourcep)
-{
-     std::vector<float> result;
-     int findin[512] {0};
-     int count = 0;
-     int lastfind = 0;
-
-     for(;;)
-     {
-         if(sourcep.find_first_of(" ",lastfind) != sourcep.npos)
-         {
-             findin[count] = sourcep[sourcep.find_first_of(" ",lastfind)];
-             result.push_back(QString::fromStdString(sourcep.substr(lastfind,sourcep.find_first_of(" ",lastfind)-lastfind)).toFloat());
-             lastfind = sourcep.find_first_of(" ",lastfind) + 1;
-             count++;
-         }
-         else
-         {
-             break;
-         }
-     }
-     return result;
-}
 
 UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
     colorbar{new QLabel},childchart{new UXZOOMCHARTVIEW(0)},
@@ -76,21 +53,19 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
     //For h1 end
 
     //For h3
-    UXWidget *focew = new UXWidget; //The pervisous version force window,change this
-//    focew->setFixedSize(512,512);
-    dpainter.setFixedSize(512,512);
+    UXWidget *focew = new UXWidget;
+    focew->setFixedSize(512,512);
 
 
 
 
-
-    h3layout->addWidget(&dpainter);
+    h3layout->addWidget(focew);
     h3layout->addWidget(colorbar);
 
     //For h3 end
 
     //For h4
-    QtMaterialRaisedButton *begin = new QtMaterialRaisedButton;
+//    QtMaterialRaisedButton *begin = new QtMaterialRaisedButton;
 //    begin->setText("Begin");
 //    begin->setRole(Material::Default);
 //    begin->setOverlayStyle(Material::TintedOverlay);
@@ -146,12 +121,12 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
                   "QLabel#forcetitle{color:white;font-size:25px;}"
                   "QLabel#analysizelabel{color:white;font-size:20px;}");
 
-    //show the drop shadow
-    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-    effect->setBlurRadius(10);
-    effect->setOffset(QPointF(0, 0));
-    effect->setColor(QColor(255, 255, 255, 75));
-    setGraphicsEffect(effect);
+//    show the drop shadow
+//    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+//    effect->setBlurRadius(10);
+//    effect->setOffset(QPointF(0, 0));
+//    effect->setColor(QColor(255, 255, 255, 75));
+//    setGraphicsEffect(effect);
 
     setMouseTracking(true);
 
@@ -193,6 +168,7 @@ void UXFORCEW::changetoggle(bool checked)
 void UXFORCEW::mousePressEvent(QMouseEvent *event)
 {
     emit bepressed();
+    raise();
         mousedown = true;
         hotpot = event->pos();
 }
@@ -230,4 +206,3 @@ void UXFORCEW::closehide()
     hide();
     showed = false;
 }
-

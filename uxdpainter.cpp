@@ -16,6 +16,7 @@ UXDPAINTER::UXDPAINTER(QWidget *parent) : QLabel(parent),
 void UXDPAINTER::paintEvent(QPaintEvent *event)
 {
     if (beginpaint){
+        emit painting();
         QPainter *mypainter = new QPainter(this);
         QPen *pen = new QPen(QColor("red"));
         mypainter->setClipRect(0,0,600,y+600);
@@ -25,7 +26,7 @@ void UXDPAINTER::paintEvent(QPaintEvent *event)
         mypainter->end();
         if(debug)
         qDebug() << x%2 << "  " << x << "  " << y;
-        help->paintEvent(event);
+//        help->paintEvent(event);
 
 
     }
