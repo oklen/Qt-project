@@ -80,11 +80,12 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
     analyizelabel->setObjectName("analysizelabel");
 //    QtMaterialRaisedButton *slice = new QtMaterialRaisedButton;
 //    slice->setText("Slice Analysize");
-    QtMaterialProgress *processbar = new QtMaterialProgress;
-    processbar->setMinimumWidth(0);
-    processbar->setMaximum(100);
-    processbar->setValue(30);
-    processbar->setProgressType(Material::DeterminateProgress);
+//    QtMaterialProgress *processbar = new QtMaterialProgress;
+//    processbar->setMinimumWidth(0);
+//    processbar->setMaximum(100);
+//    processbar->setValue(30);
+//    processbar->setProgressType(Material::DeterminateProgress);
+//    processbar->setFixedHeight(15);
 
 //    h4layout->addWidget(begin);
 //    h4layout->addWidget(pause);
@@ -92,7 +93,7 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
     h4layout->addWidget(analyizelabel);
     h4layout->addWidget(toggle);
     h4layout->addStretch();
-    h4layout->addWidget(processbar);
+//    h4layout->addWidget(processbar);
 
     UXZOOMCHARTVIEW *chartview = new UXZOOMCHARTVIEW(focew->getchart());
     chartview->yvalue = focew->vectorz;
