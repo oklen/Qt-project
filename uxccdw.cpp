@@ -82,7 +82,8 @@ void UXCCDW::paintEvent(QPaintEvent *event)
     QPainter mpainter;
 //    mpainter.setRenderHint(QPainter::Antialiasing);
     mpainter.begin(this);
-    uchar *cache = dataarray;
+    const uchar *cache = dataarray;
+    if(1)
 
     if(!zoom)
     mpainter.drawPixmap(0,0,1392/1.65,1040/1.65,
@@ -96,6 +97,7 @@ void UXCCDW::paintEvent(QPaintEvent *event)
                             ,initpoint.x()*1.65,
                             initpoint.y()*1.65,
                             (endpoint-initpoint).x()*1.65,(endpoint-initpoint).y()*1.65);
+
     if(mousedown)
     {
         mpainter.setPen(mpen);
@@ -122,8 +124,10 @@ void UXCCDW::mousePressEvent(QMouseEvent *event)
 //        shouldclose = false;
 //    qDebug() << "the should close is " << shouldclose;
     if(event->button() == Qt::RightButton)
-    {zoom = false;
-    return;}
+    {
+        zoom = false;
+        return;
+    }
     initpoint = event->pos();
     curpoint =event->pos();
     mousedown = true;

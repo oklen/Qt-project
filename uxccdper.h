@@ -11,8 +11,12 @@
 #include<QDebug>
 #include<cstring>
 #include<QPixmap>
+#include<QMutex>
+#include"uxtest45.h"
 
 #include "uxccdw.h"
+
+
 
 
 //using namespace Gdiplus;
@@ -46,12 +50,28 @@ public:
     J_STATUS_TYPE   retval;
     UXCCDW              *uxCCD;
 
-    void close();
+//    UXTEST45 test;
+
+    void InitCCD();	// 检测设备，设置参数
+    void OpenCCD();	// 打开设备，启动smt
+    void ReadCCD(int width,int height, uchar** buffer);	// 从smt的pBuffer中拷贝，用于图像识别
+    void MapView(int sizex,int sizey,uint8_t* buffer);	// 映射流媒体数据缓存，用于时时显示
+    void CloseCCD();	// 关闭设备，停止smt
+    uchar *pBuffer;
+//    per.pBuffer;
+
     void camerawstart();
     void StreamCBFunc(J_tIMAGE_INFO * pAqImageInfo);
     ~UXCCDPERX();
 private:
+    int mwidth ;
+    int mheight ;
+    QPixmap map;
+    bool Refactor = false;
+    bool NeedRead = false;
+    bool ReadDone = false;
 
+//    QMutex mutex;
 };
 
 #endif // UXCCDPERX_H

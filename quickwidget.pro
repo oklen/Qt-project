@@ -3,6 +3,48 @@ QT    += core gui quick widgets quickwidgets qml charts datavisualization
 TARGET = quickwidget
 TEMPLATE = app
 
+
+INCLUDEPATH += d:/opencv/build/include\
+INCLUDEPATH += d:/opencv/build/include/opencv\
+INCLUDEPATH += d:/opencv/build/include/opencv2\
+
+LIBS += -Ld:/opencv/build/x64/vc12/staticlib \
+    -l*
+LIBS += -Ld:/opencv/build/x64/vc12/lib \
+-lopencv_ts300 \
+-lopencv_world300
+
+#CONFIG(debug,debug|release) {
+#LIBS += -Ld:/opencv/build/x64/vc12/staticlib \
+#    -lopencv_highgui300d \
+#    -lopencv_imgproc300d \
+#    -lopencv_features2d300d \
+#    -lopencv_calib3d300d \
+#-lopencv_core300d \
+#-lIlmImf \
+#-lippicvmt \
+#-llibjasper\
+#-llibjasperd\
+#-llibjpeg\
+#-llibtiff\
+#-lopencv_features2d300d\
+#-lopencv_flann300d\
+#-lopencv_hal300d
+#}
+#LIBS += -Ld:/opencv/build/x64/vc12/lib \
+#-lopencv_ts300d \
+#-lopencv_world300d
+
+#LIBS += -Ld:/opencv/build/x64/vc12/bin \
+#-lopencv_world300d
+#} else {
+#LIBS += -LLd:/opencv/build/x64/vc12/lib \
+#    -lopencv_highgui300 \
+#    -lopencv_imgproc300 \
+#    -lopencv_features2d300 \
+#    -lopencv_core300
+#}
+
 LIBS += "-LC:/Program Files/JAI/SDK/library/CPP/lib/Win64_x64" -lJai_Factory
 INCLUDEPATH += "C:/Program Files/JAI/SDK/library/CPP/include/"
 #"F:/Qt-project/include/"
@@ -99,7 +141,9 @@ SOURCES += main.cpp \
     uxdpainter.cpp \
     uxfilemapread.cpp \
     mainwindow.cpp \
-    uxtest45.cpp
+    uxtest45.cpp \
+    uxccdsimple.cpp \
+    cver.cpp
 HEADERS += \
 #    /root/menu/fileio.h \
 #    /root/menu/fileio2.h \
@@ -445,7 +489,9 @@ HEADERS += \
     uxdpainter.h \
     uxfilemapread.h \
     mainwindow.h \
-    uxtest45.h
+    uxtest45.h \
+    uxccdsimple.h \
+    cver.h
 
 RESOURCES += quickwidget.qrc
 

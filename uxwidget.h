@@ -6,6 +6,7 @@
 #include <QtCharts>
 #include "uxzoomchart.h"
 #include "uxzoomchartview.h"
+#include "uxcdraw.h"
 /****************************************************************
  * The Core container of the Algorithm to get the line
  * after select two points.It is use by the 3d and the forcew
@@ -27,7 +28,10 @@ public:
     void manualactive(QPoint xy);
     int getINT(double a);
     UXZOOMCHART* getchart();
+    UXCDRAW cdraw;
     ~UXWidget();
+    bool drawdone = false;
+
 
 
     QVector<int> vectory;

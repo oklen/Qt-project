@@ -51,3 +51,7 @@ void UXCDRAW::doupdate()
     helper->update();
 }
 
+QPixmap UXCDRAW::getpixmap()
+{
+    return *helper->pix2;
+}

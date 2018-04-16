@@ -44,6 +44,7 @@ void UXCDRAWHELPER::paintEvent(QPaintEvent *event)
         qDebug() << i;
     }
     mypainter->end();
+    emit pixmapupdate();
 }
 
 void UXCDRAWHELPER::setpix(QPixmap *pix)
@@ -54,4 +55,5 @@ void UXCDRAWHELPER::setpix(QPixmap *pix)
 void UXCDRAWHELPER::setlinedata(QVector<float> *cache_vector)
 {
     vector = cache_vector;
+    update();
 }

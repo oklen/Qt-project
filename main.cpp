@@ -65,7 +65,7 @@
 //#include "uxuimainwindow.h"
 #include "mainwindow.h"
 #include "uxtest45.h"
-
+#include "uxtest45.h"
 
 
 
@@ -90,11 +90,12 @@ int main(int argc, char **argv)
     QCoreApplication::setOrganizationName("Hua Yong .Inc");
     QCoreApplication::setApplicationVersion("1.0.0");
     app.setFont(QFont("黑体",13));
+    UXTEST45 *test = new UXTEST45;
 
 //    mywindow.show();
 //    SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)ApplicationCrashHandler);
     UXCCDPERX per;
-
+//    per.pBuffer = new uint8_t(4343040);
 
     UXMainWindow mainWindow;
     mainWindow.setWindowFlag(Qt::WindowStaysOnBottomHint);
@@ -137,6 +138,8 @@ int main(int argc, char **argv)
     mainWindow.autop.v11layout->addWidget(per.uxCCD);
     mainWindow.show();
 
+    test->per = &per;
+    test->show();
 //    UXCCDPERX uxccd;
 
 //    UXAUTOP autop;

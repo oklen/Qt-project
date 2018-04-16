@@ -114,6 +114,198 @@ UXCCDPERX::UXCCDPERX()
     :uxCCD{new UXCCDW}
 
 {
+
+    if(Refactor)
+        return;
+    J_STATUS_TYPE   retval;
+    uint32_t        iSize;
+    uint32_t        iNumDev;
+    bool8_t         bHasChange;
+
+    m_hFactory = NULL;
+
+
+
+        retval = J_Factory_Open((int8_t*)"", &m_hFactory);
+        qDebug() << retval;
+
+        if (retval == J_ST_SUCCESS)
+            qDebug() << "Success!";
+        //Update camera list
+        retval = J_Factory_UpdateCameraList(m_hFactory, &bHasChange);
+        if(retval == J_ST_SUCCESS)
+            qDebug() <<  "find camera success";
+
+        //Get the amount of camera
+        retval = J_Factory_GetNumOfCameras(m_hFactory, &iNumDev);
+        if(retval == J_ST_SUCCESS)
+            qDebug() << "Get Camera amount:" << iNumDev;
+
+        //Get camera ID
+        retval = J_Factory_GetCameraIDByIndex(m_hFactory, 0, m_sCameraId, &iSize);
+        if(retval == J_ST_SUCCESS)
+            qDebug() << "Get Camera ID:" << m_sCameraId[0];
+
+        qDebug() << "Done get Camera ID";
+        Sleep(10000000);
+        //Open Camera
+        retval = J_Camera_Open(m_hFactory, m_sCameraId, &m_hCam);
+        if(retval == J_ST_SUCCESS)
+            qDebug() << "Open Camera success!";
+        else
+            qDebug() << "Camera open failed!!";
+
+        //Make sure streaming is supported!
+        uint32_t numStreams = 0;
+        retval = J_Camera_GetNumOfDataStreams(m_hCam, &numStreams);
+        if(retval != J_ST_SUCCESS)
+        {
+            qDebug() << "Steam Data Support fail!";
+            exit(0);
+        }
+
+        camerawstart();
+}
+
+void UXCCDPERX::camerawstart()
+{
+//    uxCCD->show();
+    pBuffer =  ( uchar*)malloc(4343040);
+    J_STATUS_TYPE   retval;
+    int64_t int64Val;
+    QSize mywindowsize;
+
+    SIZE	ViewSize;
+    RECT	ViewWindowRect;
+    POINT	ViewWindowPos;
+
+    //Get Width from the camera
+    J_Camera_GetValueInt64(m_hCam, NODE_NAME_WIDTH, &int64Val);
+    mywindowsize.setWidth((LONG)int64Val);
+    ViewSize.cx = (LONG)int64Val;
+
+    //Get Height from camera
+    J_Camera_GetValueInt64(m_hCam, NODE_NAME_HEIGHT, &int64Val);
+    mywindowsize.setHeight((LONG)int64Val);
+    ViewSize.cy =(LONG)int64Val;
+
+    //Set frame grabber dimension, if applicable
+    SetFramegrabberValue(m_hCam, NODE_NAME_HEIGHT, int64Val, &m_sCameraId[0]);
+
+
+    uint uCamNUM;
+     J_Camera_GetNumOfDataStreams(m_hCam,&uCamNUM);
+
+
+     // Get the pixelformat from the camera
+     int64_t pixelFormat = 0;
+     uint64_t jaiPixelFormat = 0;
+     retval = J_Camera_GetValueInt64(m_hCam, NODE_NAME_PIXELFORMAT, &pixelFormat);
+     J_Image_Get_PixelFormat(m_hCam, pixelFormat, &jaiPixelFormat);
+
+     //Set frame grabber pixel format, if applicable
+     SetFramegrabberPixelFormat(m_hCam, NODE_NAME_PIXELFORMAT, pixelFormat, &m_sCameraId[0]);
+
+     // Calculate number of bits (not bytes) per pixel using macro
+     int bpp = J_BitsPerPixel(jaiPixelFormat);
+     qDebug() << "Error to camerawstart";
+
+
+     retval = J_Image_OpenStream(m_hCam, 0, reinterpret_cast<J_IMG_CALLBACK_OBJECT>(this),reinterpret_cast<J_IMG_CALLBACK_FUNCTION>(&UXCCDPERX::StreamCBFunc), &m_hThread, (ViewSize.cx*ViewSize.cy*bpp)/8);
+
+     retval = J_Camera_ExecuteCommand(m_hCam, NODE_NAME_ACQSTART);
+
+
+
+}
+
+
+void UXCCDPERX::CloseCCD()
+{
+    uxCCD->stoppaint();
+    while(uxCCD->drawing)
+        qDebug() << "Wait Draw Done!";
+
+    retval = J_Camera_ExecuteCommand(m_hCam, NODE_NAME_ACQSTOP);
+    if(retval != J_ST_SUCCESS)
+        qDebug() << "Acquiration close fail";
+    else
+        qDebug() << "Acquiration Stop Success";
+    if(m_hThread)
+    {
+        retval = J_Image_CloseStream(&m_hThread);
+        if(retval != J_ST_SUCCESS)
+            qDebug() << "Stream close fail";
+        else
+            qDebug() << "Stream Stop Success";
+    }
+    else
+        {
+        qDebug() << "Thread is NULL";
+    }
+//    J_Image_Free(&m_CnvImageInfo);
+    J_Camera_Close(m_hCam);
+    J_Factory_Close(m_hFactory);
+}
+
+void UXCCDPERX::StreamCBFunc(J_tIMAGE_INFO *pAqImageInfo)
+{
+    if(NeedRead)
+        return;
+    if (m_CnvImageInfo.pImageBuffer == NULL)
+    {
+        if (J_Image_Malloc(pAqImageInfo, &m_CnvImageInfo) != J_ST_SUCCESS)
+            return;
+    }
+
+    if (m_CnvImageInfo.pImageBuffer != NULL)
+    {
+        // Convert the raw image to "normalized" image format
+        if (J_Image_FromRawToImage(pAqImageInfo, &m_CnvImageInfo) == J_ST_SUCCESS)
+            qDebug() << "Image convert!:\nsize:" << m_CnvImageInfo.iImageSize;
+//       qDebug() << "\nwidth:" << m_CnvImageInfo.iSizeX << "\nheight" << m_CnvImageInfo.iSizeY;
+    }
+
+    //Add the data provider
+//    pBuffer  = m_CnvImageInfo.pImageBuffer;
+//    mutex.unlock();
+
+//    uxCCD->xcount = (int)m_CnvImageInfo.iSizeX;
+//    uxCCD->ycount = (int)m_CnvImageInfo.iSizeY;
+//    uxCCD->dataarray = m_CnvImageInfo.pImageBuffer;
+
+//    uxCCD->toggle = true;
+//    uxCCD->doupdate();
+
+//    if(uxCCD->shouldclose)
+//    {        CloseCCD();}
+
+    MapView((int)m_CnvImageInfo.iSizeX,(int)m_CnvImageInfo.iSizeY,m_CnvImageInfo.pImageBuffer);
+//    QImage(m_CnvImageInfo.pImageBuffer,1392,1040,QImage::Format_RGB888).save(QString::number(uxCCD->count)+"j1.png");
+uxCCD->count++;
+//qDebug() << sizeof(m_CnvImageInfo.pImageBuffer)*m_CnvImageInfo.iImageSize;
+uxCCD->mutex.lock();
+    if(uxCCD->count == 30)
+    {
+        uxCCD->count = 0;
+        qDebug() << "Update Buffer!!!";
+//        pBuffer =  QImage(m_CnvImageInfo.pImageBuffer,1392,1040,QImage::Format_RGB888).bits();
+        memcpy((void*)pBuffer,m_CnvImageInfo.pImageBuffer,m_CnvImageInfo.iImageSize);
+    }
+    uxCCD->mutex.unlock();
+
+//    uxCCD->mutex.lock();
+////        QPixmap::fromImage(QImage(m_CnvImageInfo.pImageBuffer,1392,1040,QImage::Format_RGB888));
+////        map = QPixmap::fromImage(QImage(m_CnvImageInfo.pImageBuffer,1392,1040,QImage::Format_RGB888));
+//    pBuffer = new uint8_t(4343040*8);
+//    memmove(pBuffer,m_CnvImageInfo.pImageBuffer,4343040*8);
+//    uxCCD->mutex.unlock();
+    //Avoid the data being delete
+//    mutex.lock();
+}
+
+void UXCCDPERX::InitCCD()
+{
     J_STATUS_TYPE   retval;
     uint32_t        iSize;
     uint32_t        iNumDev;
@@ -154,12 +346,10 @@ UXCCDPERX::UXCCDPERX()
         if(retval != J_ST_SUCCESS)
         {qDebug() << "Steam Data Support fail!";
         return;}
-        camerawstart();
 }
 
-void UXCCDPERX::camerawstart()
+void UXCCDPERX::OpenCCD()
 {
-//    uxCCD->show();
     J_STATUS_TYPE   retval;
     int64_t int64Val;
     QSize mywindowsize;
@@ -197,79 +387,42 @@ void UXCCDPERX::camerawstart()
 
      // Calculate number of bits (not bytes) per pixel using macro
      int bpp = J_BitsPerPixel(jaiPixelFormat);
-//     void *p1 = reinterpret_cast<J_IMG_CALLBACK_FUNCTION>(&test);
-//     void* vfptr = reinterpret_cast<void*>(&MainWindow::StreamProcess);
-//     J_IMG_CALLBACK_FUNCTION *cbfptr = reinterpret_cast<J_IMG_CALLBACK_FUNCTION*>(&vfptr);
-//     retval = J_Image_OpenStream(m_hCam, 0, NULL,*cbfptr, &m_hThread, (ViewSize.cx*ViewSize.cy*bpp)/8);
-//     reinterpret_cast<J_IMG_CALLBACK_FUNCTION>(&MainWindow::StreamCBFunc);
      retval = J_Image_OpenStream(m_hCam, 0, reinterpret_cast<J_IMG_CALLBACK_OBJECT>(this),reinterpret_cast<J_IMG_CALLBACK_FUNCTION>(&UXCCDPERX::StreamCBFunc), &m_hThread, (ViewSize.cx*ViewSize.cy*bpp)/8);
 
      retval = J_Camera_ExecuteCommand(m_hCam, NODE_NAME_ACQSTART);
-
-
-
 }
 
-
-void UXCCDPERX::close()
+void UXCCDPERX::ReadCCD(int width, int height,  uchar **buffer)
 {
-    uxCCD->stoppaint();
-    while(uxCCD->drawing)
-        qDebug() << "Wait Draw Done!";
-
-    retval = J_Camera_ExecuteCommand(m_hCam, NODE_NAME_ACQSTOP);
-    if(retval != J_ST_SUCCESS)
-        qDebug() << "Acquiration close fail";
-    else
-        qDebug() << "Acquiration Stop Success";
-    if(m_hThread)
-    {
-        retval = J_Image_CloseStream(&m_hThread);
-        if(retval != J_ST_SUCCESS)
-            qDebug() << "Stream close fail";
-        else
-            qDebug() << "Stream Stop Success";
-    }
-    else
-        {
-        qDebug() << "Thread is NULL";
-    }
-//    J_Image_Free(&m_CnvImageInfo);
-    J_Camera_Close(m_hCam);
-    J_Factory_Close(m_hFactory);
+    mwidth = width;
+    mheight = height;
+    NeedRead = true;
+    uxCCD->mutex.lock();
+//    mem(buffer,pBuffer,4343040*8);
+    *buffer =  pBuffer;
+//    QImage cache= QImage(pBuffer,1392,1040,QImage::Format_RGB888);
+//    *buffer = convert_image(pBuffer,1024,768);
+    uxCCD->mutex.unlock();
+//    QImage img = QImage(*buffer,1392,1040,QImage::Format_RGB888).scaled(width,height);
+//    *buffer = img.bits();
+    NeedRead = false;
 }
 
-void UXCCDPERX::StreamCBFunc(J_tIMAGE_INFO *pAqImageInfo)
+void UXCCDPERX::MapView(int sizex, int sizey, uint8_t *buffer)
 {
-    if (m_CnvImageInfo.pImageBuffer == NULL)
-    {
-        if (J_Image_Malloc(pAqImageInfo, &m_CnvImageInfo) != J_ST_SUCCESS)
-            return;
-    }
-
-    if (m_CnvImageInfo.pImageBuffer != NULL)
-    {
-        // Convert the raw image to "normalized" image format
-        if (J_Image_FromRawToImage(pAqImageInfo, &m_CnvImageInfo) == J_ST_SUCCESS)
-            qDebug() << "Image convert!:\nsize:" << m_CnvImageInfo.iImageSize;
-//       qDebug() << "\nwidth:" << m_CnvImageInfo.iSizeX << "\nheight" << m_CnvImageInfo.iSizeY;
-}
-    uxCCD->xcount = (int)m_CnvImageInfo.iSizeX;
-    uxCCD->ycount = (int)m_CnvImageInfo.iSizeY;
-    uxCCD->dataarray = m_CnvImageInfo.pImageBuffer;
-//    for(int i = 0;i<(m_CnvImageInfo.iImageSize/3);i++)
-//    {
-//        qDebug() <<*p++;
-//    };
-
+    uxCCD->xcount = sizex;
+    uxCCD->ycount = sizey;
+    uxCCD->dataarray = buffer;
 
     uxCCD->toggle = true;
     uxCCD->doupdate();
-//    qDebug() << "Read:" <<m_CnvImageInfo.iImageSize/3 << "pixels";
+
     if(uxCCD->shouldclose)
-    {        close();}
+    {        CloseCCD();}
 }
 
 UXCCDPERX::~UXCCDPERX()
-{}
+{
+
+}
 

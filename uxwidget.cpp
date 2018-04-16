@@ -15,7 +15,11 @@ UXWidget::UXWidget(QWidget *parent) :
     chart{new UXZOOMCHART},
     vectorz{new QVector<qreal>}
 {
+    //To do: Need to give data to cdraw's helper.
+    //Note: The set operation will automatically driver the full painting loop.
+    //After draw draw done,You need to set the bool to enable slice analysis.
 
+    connect(cdraw.helper,SIGNAL(pixmapupdate()),this,SLOT(update()));
 }
 
 int UXWidget::getINT(double a)
@@ -28,34 +32,41 @@ int UXWidget::getINT(double a)
 
 void UXWidget::paintEvent(QPaintEvent *event)
 {
+    if(!drawdone)
+    {
+        QPainter *painter = new QPainter(this);
+        painter->drawPixmap(QRectF( rect()),cdraw.getpixmap(),QRectF( rect()));
+        painter->end();
+        return;
+    }
 //    qDebug() << "paint!";
     if (pos == QPoint(0,0)){
-        QPainter *painter = new QPainter(this);
-        painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setPen(QColor("black"));
-        QRadialGradient RadialGrad(QPointF(100,100),200,QPointF(200,200));
-        RadialGrad.setSpread(QGradient::ReflectSpread);
-        RadialGrad.setColorAt(0,Qt::white);
-        RadialGrad.setColorAt(1,Qt::lightGray);
-        painter->setBrush(QBrush(RadialGrad));
-        painter->drawRect(0,0,800,800);
-        painter->end();
+//        QPainter *painter = new QPainter(this);
+//        painter->setRenderHint(QPainter::Antialiasing, true);
+//        painter->setPen(QColor("black"));
+//        QRadialGradient RadialGrad(QPointF(100,100),200,QPointF(200,200));
+//        RadialGrad.setSpread(QGradient::ReflectSpread);
+//        RadialGrad.setColorAt(0,Qt::white);
+//        RadialGrad.setColorAt(1,Qt::lightGray);
+//        painter->setBrush(QBrush(RadialGrad));
+//        painter->drawRect(0,0,800,800);
+//        painter->end();
     }
     else
     {
 
         if (stage == 3)
         {
-            QPainter *painter = new QPainter(this);
-            painter->setRenderHint(QPainter::Antialiasing, true);
-            painter->setPen(QColor("black"));
-            painter->drawLine(pos,pos2);
-            painter->setBrush(QBrush(Qt::cyan));
-            for (int j =0;j<100;j++)
-            for(int i = 0;i<100;i++)
-            {
-                painter->drawEllipse(QPoint(6*j,6*i),2,2);
-            }
+//            QPainter *painter = new QPainter(this);
+//            painter->setRenderHint(QPainter::Antialiasing, true);
+//            painter->setPen(QColor("black"));
+//            painter->drawLine(pos,pos2);
+//            painter->setBrush(QBrush(Qt::cyan));
+//            for (int j =0;j<100;j++)
+//            for(int i = 0;i<100;i++)
+//            {
+//                painter->drawEllipse(QPoint(6*j,6*i),2,2);
+//            }
 
             double k1 = double(pos.y() - pos2.y())/(pos.x()- pos2.x());
 //switch axis
@@ -109,13 +120,13 @@ void UXWidget::paintEvent(QPaintEvent *event)
                         vectorx.append(6*getINT(initPoint.x()) - i*6);
                     }
             }
-            painter->setBrush(Qt::red);
-            for (int j =0;j<vectorx.size();j++)
-            {
-                painter->drawEllipse(QPoint(vectorx.at(j),vectory.at(j))
-                        ,2,2);
-            }
-            painter->end();
+//            painter->setBrush(Qt::red);
+//            for (int j =0;j<vectorx.size();j++)
+//            {
+//                painter->drawEllipse(QPoint(vectorx.at(j),vectory.at(j))
+//                        ,2,2);
+//            }
+//            painter->end();
             stage = 1;
             //Data Get Here
             QSplineSeries *series = new QSplineSeries();

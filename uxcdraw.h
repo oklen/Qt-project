@@ -18,9 +18,11 @@ public:
     void paintEvent(QPaintEvent *event);
     QVector<float>* getlinedata();
     void sety(int value);
+    QPixmap getpixmap();
 
     QPixmap *pix;
     int y=0;
+    UXCDRAWHELPER *helper;
 signals:
     void drawComplete();
 public slots:
@@ -28,7 +30,6 @@ public slots:
 private:
     QTimer *timer;
     bool drawpix;
-    UXCDRAWHELPER *helper;
 };
 
 

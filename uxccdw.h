@@ -14,8 +14,7 @@
 #include <include/uxccdleftb.h>
 #include <include/uxccdrightb.h>
 #include <uxlp.h>
-
-
+#include <mutex>
 
 
 
@@ -32,6 +31,7 @@ public:
     void doupdate();
     void stoppaint();
     bool drawing = false;
+    bool save = true;
 
      uint8_t* dataarray = new uint8_t(1447680*3);
     int xcount = 0;
@@ -49,6 +49,8 @@ public:
     uxccdrightb ur;
     UXLP lp;
     QtMaterialProgress progress;
+    std::mutex mutex;
+    int count = 0;
 
 signals:
     void shoudld();

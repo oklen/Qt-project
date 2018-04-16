@@ -6,6 +6,7 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
   h2layoutr{new QHBoxLayout},
   hotpot{QPoint(0,0)}
 {
+    setFixedSize(800,600);
     // consturct the widget and layout
 
     setWindowTitle("Force Imaging");
