@@ -1497,7 +1497,17 @@ DISTFILES += \
     /root/图片/spm6.png \
 DISTFILES += \
     "C:/Program Files/JAI/SDK/library/CPP/include/CLProtocol/ClProtocol.def"\
-    "C:/Program Files/JAI/SDK/library/CPP/include/CLProtocol/ClSerial.def"
+    "C:/Program Files/JAI/SDK/library/CPP/include/CLProtocol/ClSerial.def" \
+    C:/Users/Administrator/Pictures/autowindowbc.png \
+    C:/Users/Administrator/Pictures/background.png \
+    C:/Users/Administrator/Pictures/downarraow.png \
+    C:/Users/Administrator/Pictures/end.png \
+    C:/Users/Administrator/Pictures/image.png \
+    C:/Users/Administrator/Pictures/left.png \
+    C:/Users/Administrator/Pictures/position.png \
+    C:/Users/Administrator/Pictures/RightPlane.png \
+    C:/Users/Administrator/Pictures/setup.png \
+    C:/Users/Administrator/Pictures/topbar.png
 
 FORMS += \
     mainwindow.ui

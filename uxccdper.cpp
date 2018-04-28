@@ -147,24 +147,30 @@ UXCCDPERX::UXCCDPERX()
             qDebug() << "Get Camera ID:" << m_sCameraId[0];
 
         qDebug() << "Done get Camera ID";
-        Sleep(10000000);
+//        Sleep(10000000);
         //Open Camera
         retval = J_Camera_Open(m_hFactory, m_sCameraId, &m_hCam);
         if(retval == J_ST_SUCCESS)
+        {
             qDebug() << "Open Camera success!";
+            uint32_t numStreams = 0;
+            retval = J_Camera_GetNumOfDataStreams(m_hCam, &numStreams);
+            camerawstart();
+            if(retval != J_ST_SUCCESS)
+            {
+                qDebug() << "Steam Data Support fail!";
+    //            exit(0);
+            }
+        }
         else
             qDebug() << "Camera open failed!!";
 
         //Make sure streaming is supported!
-        uint32_t numStreams = 0;
-        retval = J_Camera_GetNumOfDataStreams(m_hCam, &numStreams);
-        if(retval != J_ST_SUCCESS)
-        {
-            qDebug() << "Steam Data Support fail!";
-            exit(0);
-        }
+//        return;
 
-        camerawstart();
+
+
+
 }
 
 void UXCCDPERX::camerawstart()
@@ -400,7 +406,7 @@ void UXCCDPERX::ReadCCD(int width, int height,  uchar **buffer)
     uxCCD->mutex.lock();
 //    mem(buffer,pBuffer,4343040*8);
     *buffer =  pBuffer;
-//    QImage cache= QImage(pBuffer,1392,1040,QImage::Format_RGB888);
+//    QImage cache = QImage(pBuffer,1392,1040,QImage::Format_RGB888);
 //    *buffer = convert_image(pBuffer,1024,768);
     uxCCD->mutex.unlock();
 //    QImage img = QImage(*buffer,1392,1040,QImage::Format_RGB888).scaled(width,height);

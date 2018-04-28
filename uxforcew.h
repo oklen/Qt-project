@@ -22,7 +22,6 @@
 #include "uxzoomchart.h"
 #include "uxzoomchartview.h"
 #include "uxcb.h"
-#include "uxcdraw.h"
 
 class UXFORCEW : public QFrame
 {

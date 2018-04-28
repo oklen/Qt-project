@@ -15,18 +15,12 @@ void UXTEST45::mousePressEvent(QMouseEvent *event)
     }
   else
      dotest();
-
-//    update();
 }
 
 void UXTEST45::dotest()
 {
-    qDebug() << "DOtest!";
     UXCCDPERX* pers = (UXCCDPERX*)per;
     pers->ReadCCD(width(),height(),&pointers);
-//    pointers = pers->pBuffer;
-    qDebug() << "DOtest! Done";
-//*map = QPixmap::fromImage(QImage(pointers,1392,1040,QImage::Format_RGB888));
     Isupdate = true;
 }
 

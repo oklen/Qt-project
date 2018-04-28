@@ -81,20 +81,16 @@ int main(int argc, char **argv)
 ************************************************************************/
 
 
-
-
-
     QApplication app(argc, argv);
 
     QCoreApplication::setApplicationName("Hua Yong Scan software");
     QCoreApplication::setOrganizationName("Hua Yong .Inc");
     QCoreApplication::setApplicationVersion("1.0.0");
     app.setFont(QFont("黑体",13));
-    UXTEST45 *test = new UXTEST45;
+//    UXTEST45 *test = new UXTEST45;
 
 //    mywindow.show();
 //    SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)ApplicationCrashHandler);
-    UXCCDPERX per;
 //    per.pBuffer = new uint8_t(4343040);
 
     UXMainWindow mainWindow;
@@ -131,6 +127,7 @@ int main(int argc, char **argv)
 
 //    mainWindow.setLayout(vlayout);
 
+    UXCCDPERX per;
 
     mainWindow.connect(&mainWindow.menubutton,SIGNAL(signalp()),mainWindow.menubutton.menu,SLOT(showoff())); //show the menu
     mainWindow.connect(&mainWindow.menubutton,SIGNAL(signalp()),mainWindow.my3d,SLOT(windowswap())); //swap 3d windows
@@ -138,8 +135,10 @@ int main(int argc, char **argv)
     mainWindow.autop.v11layout->addWidget(per.uxCCD);
     mainWindow.show();
 
-    test->per = &per;
-    test->show();
+    return app.exec();
+
+//    test->per = &per;
+//    test->show();
 //    UXCCDPERX uxccd;
 
 //    UXAUTOP autop;
@@ -165,7 +164,6 @@ int main(int argc, char **argv)
 ////   h5layout->addWidget(progress);
 //   autop.v11layout->addLayout(h5layout);
 
-    return app.exec();
 }
 /*******************************************************************************************
  * Used to produce two chart .However these is decrepted now.

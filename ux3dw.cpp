@@ -157,7 +157,7 @@ UX3DW::UX3DW(QWidget *parent) : QFrame(parent),
     mytheme->setAmbientLightStrength(1);
     mytheme->setGridLineColor(Qt::black);
 
-
+//    this->setFixedSize(600,800);
 }
 
 void UX3DW::mousePressEvent(QMouseEvent *event)

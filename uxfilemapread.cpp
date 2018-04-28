@@ -33,10 +33,13 @@ void UXFILEMAPREAD::read()
         0, // Select where to begin read in low-order
         BUFSIZ
         );
+
     qDebug() << "R:Get Threre";
 
     TCHAR* cache = new TCHAR[readsize/sizeof(TCHAR)+1];
+
     CopyMemory(cache,(PVOID)(pBuf+currentpos),readsize);
+
     cache[readsize/sizeof(TCHAR)] = '\0';
     qDebug() << QString::fromUtf16(reinterpret_cast<ushort*>(cache));
     storeText = QString::fromUtf16(reinterpret_cast<ushort*>(cache));

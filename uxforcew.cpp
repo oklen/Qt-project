@@ -6,7 +6,6 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
   h2layoutr{new QHBoxLayout},
   hotpot{QPoint(0,0)}
 {
-    setFixedSize(800,600);
     // consturct the widget and layout
 
     setWindowTitle("Force Imaging");
@@ -57,16 +56,13 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
     UXWidget *focew = new UXWidget;
     focew->setFixedSize(512,512);
 
-
-
-
     h3layout->addWidget(focew);
     h3layout->addWidget(colorbar);
 
     //For h3 end
 
     //For h4
-//    QtMaterialRaisedButton *begin = new QtMaterialRaisedButton;
+    QtMaterialRaisedButton *begin = new QtMaterialRaisedButton;
 //    begin->setText("Begin");
 //    begin->setRole(Material::Default);
 //    begin->setOverlayStyle(Material::TintedOverlay);
@@ -86,7 +82,6 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
 //    processbar->setMaximum(100);
 //    processbar->setValue(30);
 //    processbar->setProgressType(Material::DeterminateProgress);
-//    processbar->setFixedHeight(15);
 
 //    h4layout->addWidget(begin);
 //    h4layout->addWidget(pause);
@@ -123,7 +118,7 @@ UXFORCEW::UXFORCEW(QWidget *parent) : QFrame(parent),
                   "QLabel#forcetitle{color:white;font-size:25px;}"
                   "QLabel#analysizelabel{color:white;font-size:20px;}");
 
-//    show the drop shadow
+    //show the drop shadow
 //    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
 //    effect->setBlurRadius(10);
 //    effect->setOffset(QPointF(0, 0));
